@@ -37,7 +37,7 @@
             <p>Our services are not directed at children under 13. We do not knowingly collect personal information from children.</p>
 
             <h2>9. Contact Us</h2>
-            <p>If you have questions about this privacy policy, contact us at <a href="mailto:info@cosmexpvtltd.com" class="text-primary">info@cosmexpvtltd.com</a> or via WhatsApp.</p>
+            <p>If you have questions about this privacy policy, contact us at <a href="mailto:{{ \App\Models\Setting::get('contact_email', 'info@thecosmex.com') }}" class="text-primary">{{ \App\Models\Setting::get('contact_email', 'info@thecosmex.com') }}</a> or via WhatsApp.</p>
         </div>
     </section>
 @endsection

@@ -12,10 +12,10 @@ class SettingsSeeder extends Seeder
         $settings = [
             'site_name' => 'Cosmex Pvt Ltd',
             'site_tagline' => 'Professional Aesthetic Products & Machines',
-            'contact_email' => 'info@cosmexpvtltd.com',
-            'contact_phone' => '+92 300 1234567',
-            'whatsapp_number' => '923001234567',
-            'address' => 'Lahore, Pakistan',
+            'contact_email' => 'info@thecosmex.com',
+            'contact_phone' => '0328-4333364',
+            'whatsapp_number' => '923284333364',
+            'address' => '21-B, G Block, Johar Town, Lahore, Pakistan',
             'facebook_url' => '',
             'instagram_url' => '',
             'tiktok_url' => ''

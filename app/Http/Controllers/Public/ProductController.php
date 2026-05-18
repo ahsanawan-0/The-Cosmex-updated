@@ -121,7 +121,7 @@ class ProductController extends Controller
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->inRandomOrder()
-            ->take(6)
+            ->take(5)
             ->get();
 
         $reviews = $product->reviews()->approved()->latest()->get();

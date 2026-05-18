@@ -8,14 +8,12 @@
 @endphp
 
 <footer class="bg-white text-text-primary">
-    <div class="mx-auto max-w-[1180px] px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-[1180px] py-12">
         <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             <div>
                 <a href="{{ route('home') }}" class="inline-block">
-                    <div class="font-heading text-3xl font-bold tracking-tight text-primary">Cosmex</div>
-                    <div class="text-[11px] font-semibold text-text-secondary">Pvt Ltd</div>
+                    <img src="{{ asset('images/cosmex_logo.png') }}" alt="Cosmex Logo" class="h-[60px] w-auto object-contain">
                 </a>
-                <p class="mt-3 text-[11px] font-semibold uppercase text-text-secondary">Since 2017</p>
                 <p class="mt-5 max-w-sm text-sm leading-7 text-text-secondary">{{ $siteTagline }} imported for clinics, dermatologists, and beauty professionals.</p>
                 <div class="mt-6 flex items-center gap-5">
                     <a href="{{ $facebook }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -52,9 +50,9 @@
             <div>
                 <h3 class="footer-title">Contact</h3>
                 <ul class="mt-6 space-y-4 text-sm text-text-secondary">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-primary"></i><span>{{ $whatsAppNumber }}</span></li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-primary"></i><span>info@cosmexpvtltd.com</span></li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-primary"></i><span>Lahore, Pakistan</span></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-primary"></i><span>{{ \App\Models\Setting::get('contact_phone', '0328-4333364') }}</span></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-primary"></i><span>{{ \App\Models\Setting::get('contact_email', 'info@thecosmex.com') }}</span></li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-location-dot text-primary mt-1"></i><span>{{ \App\Models\Setting::get('address', '21-B, G Block, Johar Town, Lahore, Pakistan') }}</span></li>
                 </ul>
                 <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary mt-8 inline-flex items-center gap-2 text-sm">
                     <i class="fa-brands fa-whatsapp text-white"></i>

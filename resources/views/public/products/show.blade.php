@@ -234,7 +234,6 @@
         <div class="mx-auto max-w-[1180px] rounded-[28px] bg-white px-4 py-5 shadow-card sm:px-6 lg:px-8">
             <div class="flex gap-2 overflow-x-auto rounded-full bg-bg-light p-1 hide-scrollbar">
                 <button onclick="pdpTab('description',this)" class="pdp-tab-btn active">Description</button>
-                <button onclick="pdpTab('howto',this)" class="pdp-tab-btn">How to Use</button>
                 <button onclick="pdpTab('delivery',this)" class="pdp-tab-btn">Delivery Info</button>
                 <button onclick="pdpTab('reviews',this)" class="pdp-tab-btn">Reviews ({{ $reviews->count() }})</button>
             </div>
@@ -247,10 +246,6 @@
                 @else
                     <p class="text-zinc-400">No description available for this product yet.</p>
                 @endif
-            </div>
-
-            <div id="pdp-panel-howto" class="pdp-panel hidden pt-8 text-sm leading-7 text-text-secondary">
-                <p><strong>Professional-use notice:</strong> Cosmex imports directly and sells only to dermatologists and aestheticians. Products must be used or administered by qualified professionals. For clinical guidance or wholesale inquiries, please reach out to us on WhatsApp.</p>
             </div>
 
             <div id="pdp-panel-delivery" class="pdp-panel hidden pt-8">
@@ -326,11 +321,6 @@
                         </div>
                         @endforeach
                     </div>
-                @else
-                    <div class="text-center py-10 text-zinc-400 mb-8">
-                        <i class="fa-regular fa-comment-dots text-4xl mb-3"></i>
-                        <p class="text-sm">No reviews yet. Be the first to leave a review!</p>
-                    </div>
                 @endif
 
                 {{-- Submit Review Form --}}
@@ -399,7 +389,7 @@
         <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
             <p class="text-center text-[11px] font-bold uppercase text-accent">Related Products</p>
             <h2 class="mt-2 text-center font-heading text-2xl font-bold text-text-primary sm:text-3xl">You May Also Like</h2>
-            <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-5">
+            <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
                 @foreach($relatedProducts as $related)
                     <x-product.card :product="$related" />
                 @endforeach

@@ -1,44 +1,49 @@
-<div class="relative z-20 mb-8 px-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1180px] rounded-2xl bg-white p-4 shadow-card sm:p-6 lg:p-8">
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            
-            @php
-                $heroFeatures = [
-                    [
-                        'icon' => 'fa-solid fa-users', 
-                        'title' => 'Who We Are', 
-                        'text' => 'Cosmex imports professional aesthetic products and machines.'
-                    ],
-                    [
-                        'icon' => 'fa-regular fa-circle-check', 
-                        'title' => 'Our Mission', 
-                        'text' => 'Deliver premium quality products with trust and professionalism.'
-                    ],
-                    [
-                        'icon' => 'fa-solid fa-eye', 
-                        'title' => 'Our Vision', 
-                        'text' => 'To be Pakistan\'s most trusted aesthetic solutions partner.'
-                    ],
-                    [
-                        'icon' => 'fa-solid fa-shield-halved', 
-                        'title' => 'Our Promise', 
-                        'text' => 'Quality, authenticity and the best service for our clients.'
-                    ],
-                ];
-            @endphp
-            
-            @foreach ($heroFeatures as $feature)
-                <div class="flex min-h-24 items-start gap-4 rounded-2xl bg-bg-light p-4">
-                    <div class="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-primary shadow-sm">
-                        <i class="{{ $feature['icon'] }} text-lg"></i>
+<div class="relative z-20 mb-8">
+    <div class="mx-auto rounded-2xl sm:rounded-full bg-primary py-5 px-6 sm:px-8 shadow-card" style="background: #1558b0; max-width: 1180px;">
+
+        @php
+            $heroFeatures = [
+                [
+                    'icon'  => 'fa-solid fa-users',
+                    'title' => 'Who We Are',
+                    'text'  => 'Cosmex imports professional aesthetic products and machines.'
+                ],
+                [
+                    'icon'  => 'fa-solid fa-bullseye',
+                    'title' => 'Our Mission',
+                    'text'  => 'Deliver premium quality products with trust and professionalism.'
+                ],
+                [
+                    'icon'  => 'fa-solid fa-eye',
+                    'title' => 'Our Vision',
+                    'text'  => 'To be Pakistan\'s most trusted aesthetic solutions partner.'
+                ],
+                [
+                    'icon'  => 'fa-solid fa-shield-halved',
+                    'title' => 'Our Promise',
+                    'text'  => 'Quality, authenticity and the best service for our clients.'
+                ],
+            ];
+        @endphp
+
+        <div class="flex flex-col sm:flex-row items-stretch">
+            @foreach ($heroFeatures as $index => $feature)
+                {{-- Vertical divider before every item except the first --}}
+                @if ($index > 0)
+                    <div class="hidden sm:block w-px bg-white/25 my-2 mx-6 shrink-0"></div>
+                @endif
+
+                <div class="flex flex-1 items-center gap-4 py-2 sm:py-0">
+                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20 text-white" style="min-width:48px;">
+                        <i class="{{ $feature['icon'] }} text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="mb-1 text-sm font-semibold text-text-primary">{{ $feature['title'] }}</h3>
-                        <p class="text-[13px] font-medium leading-relaxed text-text-secondary">{{ $feature['text'] }}</p>
+                        <h3 class="text-sm font-bold text-white leading-snug">{{ $feature['title'] }}</h3>
+                        <p class="text-xs leading-relaxed text-white mt-0.5" style="max-width: 200px;">{{ $feature['text'] }}</p>
                     </div>
                 </div>
             @endforeach
-
         </div>
+
     </div>
 </div>

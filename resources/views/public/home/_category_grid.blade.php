@@ -2,7 +2,7 @@
     <div class="mx-auto mb-7 max-w-[1180px] px-4 sm:px-6 lg:px-8">
         <p class="mb-2 text-center text-[11px] font-bold uppercase text-accent">Our Categories</p>
         <h2 class="mx-auto max-w-2xl text-center font-heading text-2xl font-bold tracking-normal text-text-primary lg:text-3xl">Explore Our Range of Advanced Aesthetic Solutions</h2>
-        <p class="mt-2 max-w-xl text-sm text-text-secondary">High quality aesthetic products and advanced machines for your clinic.</p>
+        <p class="mt-2 mx-auto max-w-xl text-center text-sm text-text-secondary">High quality aesthetic products and advanced machines for your clinic.</p>
     </div>
 
     <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">

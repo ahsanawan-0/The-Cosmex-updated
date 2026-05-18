@@ -40,7 +40,7 @@
             <p>We reserve the right to update these terms at any time. Continued use of our website constitutes acceptance of the updated terms.</p>
 
             <h2>10. Contact</h2>
-            <p>Questions? Contact us at <a href="mailto:info@cosmexpvtltd.com" class="text-primary">info@cosmexpvtltd.com</a> or via WhatsApp.</p>
+            <p>Questions? Contact us at <a href="mailto:{{ \App\Models\Setting::get('contact_email', 'info@thecosmex.com') }}" class="text-primary">{{ \App\Models\Setting::get('contact_email', 'info@thecosmex.com') }}</a> or via WhatsApp.</p>
         </div>
     </section>
 @endsection

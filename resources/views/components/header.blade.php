@@ -21,6 +21,31 @@
         ->sortBy(fn ($category) => array_search($category->name, $navCategoryNames, true))
         ->values();
     $isActive = fn (...$patterns) => request()->routeIs(...$patterns);
+
+    // Determine which top-level nav category is "active" for the current page
+    $activeNavCategoryId = null;
+    if (request()->routeIs('products.show')) {
+        $slug = request()->route('slug') ?? request()->route('product');
+        $currentProduct = \App\Models\Product::with('category.parent')
+            ->where('slug', $slug)->first();
+        if ($currentProduct && $currentProduct->category) {
+            // Walk up to the root category
+            $cat = $currentProduct->category;
+            while ($cat->parent_id !== null && $cat->parent) {
+                $cat = $cat->parent;
+            }
+            $activeNavCategoryId = $cat->id;
+        }
+    } elseif (request()->routeIs('category.show')) {
+        $slug = request()->route('slug') ?? request()->route('category');
+        $cat = \App\Models\Category::with('parent')->where('slug', $slug)->first();
+        if ($cat) {
+            while ($cat->parent_id !== null && $cat->parent) {
+                $cat = $cat->parent;
+            }
+            $activeNavCategoryId = $cat->id;
+        }
+    }
 @endphp
 
 <div class="sticky top-0 z-50 bg-white/95 backdrop-blur-xl">
@@ -29,7 +54,7 @@
     </div>
 
     <div class="hidden border-b border-border bg-white lg:block">
-        <div class="mx-auto flex h-10 max-w-[1180px] items-center justify-end gap-7 px-4 text-xs font-medium text-text-secondary sm:px-6 lg:px-8">
+        <div class="mx-auto flex h-10 max-w-[1180px] items-center justify-end gap-7 text-xs font-medium text-text-secondary">
             <a href="tel:{{ $contactPhone }}" class="inline-flex items-center gap-2 transition hover:text-primary">
                 <i class="fa-solid fa-phone text-primary"></i>
                 {{ $contactPhone }}
@@ -38,21 +63,13 @@
                 <i class="fa-regular fa-envelope text-primary"></i>
                 {{ $contactEmail }}
             </a>
-            <a href="{{ route('login') }}" class="inline-flex items-center gap-2 transition hover:text-primary" aria-label="Account">
-                <i class="fa-regular fa-user text-primary"></i>
-                Admin
-            </a>
         </div>
     </div>
 
     <header class="border-b border-border bg-white">
-        <div class="mx-auto flex h-[78px] max-w-[1180px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto flex h-[78px] max-w-[1180px] items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="{{ $siteName }} Home">
-                <span class="brand-mark shrink-0" aria-hidden="true"></span>
-                <span class="leading-tight">
-                    <span class="block font-heading text-[15px] font-extrabold uppercase tracking-normal text-primary">The <span class="text-accent">Cosmex</span></span>
-                    <span class="block text-[10px] font-bold uppercase text-accent">Aesthetic Imports</span>
-                </span>
+                <img src="{{ asset('images/cosmex_logo.png') }}" alt="{{ $siteName }} Logo" class="h-[60px] w-auto object-contain">
             </a>
 
             <nav class="hidden items-center gap-1 lg:flex">
@@ -68,9 +85,16 @@
                             'Aesthetic Products' => 'AESTHETIC',
                             default => 'EQUIPMENT',
                         };
+                        $promoImage = match ($navCategory->name) {
+                            'Laser Machines' => 'Laser Machines.png',
+                            'HydraFacial' => 'HydraFacial.png',
+                            'Aesthetic Products' => 'Aesthetic Equipment.png',
+                            default => 'Aesthetic Equipment.png',
+                        };
+                        $isNavActive = $activeNavCategoryId === $navCategory->id;
                     @endphp
                     <div class="group relative">
-                        <a href="{{ route('category.show', $navCategory->slug) }}" class="inline-flex items-center gap-2 rounded-full px-4 py-3 text-xs font-bold uppercase text-text-primary transition hover:bg-bg-light hover:text-accent">
+                        <a href="{{ route('category.show', $navCategory->slug) }}" class="inline-flex items-center gap-2 rounded-full px-4 py-3 text-xs font-bold uppercase transition {{ $isNavActive ? 'bg-bg-light text-accent' : 'text-text-primary hover:bg-bg-light hover:text-accent' }}">
                             {{ $navCategory->name }}
                             <i class="fa-solid fa-chevron-down text-[10px]"></i>
                         </a>
@@ -93,15 +117,18 @@
                                             </a>
                                         @endforelse
                                     </div>
-                                    <div class="relative min-h-[260px] overflow-hidden bg-gradient-to-br from-[#F3F9FF] via-white to-[#FFF1E8] p-5">
-                                        <img src="{{ asset('images/aesthetic_hero.png') }}" alt="{{ $navCategory->name }}" class="absolute inset-x-0 bottom-3 mx-auto h-[190px] w-[190px] object-contain">
-                                        <p class="font-heading text-3xl font-extrabold uppercase tracking-wide text-primary/15 [writing-mode:vertical-rl]">{{ $promoLabel }}</p>
-                                        <div class="absolute bottom-5 left-5 right-5">
-                                            <p class="mb-3 font-heading text-xl font-bold text-text-primary">{{ $navCategory->name }}</p>
-                                            <a href="{{ route('category.show', $navCategory->slug) }}" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-5 text-xs font-bold uppercase text-white transition hover:bg-primary-dark">
-                                                View All
-                                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                                            </a>
+                                    <div class="relative min-h-[260px] overflow-hidden bg-gradient-to-br from-[#F3F9FF] via-white to-[#FFF1E8] p-5 flex flex-col justify-between">
+                                        <div class="relative z-10 flex items-center justify-between">
+                                            <div>
+                                                <p class="font-heading text-lg font-bold text-text-primary">{{ $navCategory->name }}</p>
+                                                <a href="{{ route('category.show', $navCategory->slug) }}" class="mt-2 inline-flex min-h-9 items-center justify-center gap-2 rounded-full bg-primary px-4 text-[11px] font-bold uppercase text-white transition hover:bg-primary-dark shadow-md shadow-primary/20">
+                                                    View All
+                                                    <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="relative mt-4 flex justify-center items-end h-[160px]">
+                                            <img src="{{ asset('images/' . $promoImage) }}" alt="{{ $navCategory->name }}" class="max-h-[150px] w-auto object-cover rounded-2xl overflow-hidden shadow-md transition-transform duration-500 group-hover:scale-105">
                                         </div>
                                     </div>
                                 </div>

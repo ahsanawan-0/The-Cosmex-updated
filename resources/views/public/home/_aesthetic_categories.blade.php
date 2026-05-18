@@ -18,8 +18,8 @@
     $dbCategories = $aestheticCategories->keyBy('slug');
 @endphp
 
-<section class="py-16 lg:py-20 bg-zinc-50 overflow-hidden">
-    <div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+<section class="py-16 lg:py-20 bg-zinc-50 overflow-hidden w-full">
+    <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
         {{-- Header --}}
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
             <div>
