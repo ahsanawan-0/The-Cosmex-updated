@@ -12,8 +12,9 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        $categories = Category::where('status', 'active')
-            ->whereIn('name', ['Laser Machines', 'HydraFacial', 'Aesthetic Products', 'Other Equipment'])
+        // Dynamically load ALL active top-level categories so admin-created categories appear automatically
+        $categories = Category::whereNull('parent_id')
+            ->where('status', 'active')
             ->orderBy('sort_order')
             ->get();
 

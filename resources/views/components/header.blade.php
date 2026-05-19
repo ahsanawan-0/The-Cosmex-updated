@@ -4,9 +4,8 @@
     $contactPhone = \App\Models\Setting::get('contact_phone', '+92 300 1234567');
     $contactEmail = \App\Models\Setting::get('contact_email', 'info@thecosmex.com');
     $whatsAppLink = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsAppNumber);
-    $navCategoryNames = ['Laser Machines', 'HydraFacial', 'Aesthetic Products', 'Other Equipment'];
+    // Dynamically load ALL active top-level categories — controlled entirely by the admin portal
     $navCategories = \App\Models\Category::whereNull('parent_id')
-        ->whereIn('name', $navCategoryNames)
         ->where('status', 'active')
         ->with([
             'children' => function ($query) {
@@ -17,9 +16,7 @@
             },
         ])
         ->orderBy('sort_order')
-        ->get()
-        ->sortBy(fn ($category) => array_search($category->name, $navCategoryNames, true))
-        ->values();
+        ->get();
     $isActive = fn (...$patterns) => request()->routeIs(...$patterns);
 
     // Determine which top-level nav category is "active" for the current page
@@ -79,18 +76,16 @@
                     @php
                         $navItems = $navCategory->children->isNotEmpty() ? $navCategory->children : $navCategory->products;
                         $isProductMenu = $navCategory->children->isEmpty();
-                        $promoLabel = match ($navCategory->name) {
-                            'Laser Machines' => 'LASER',
-                            'HydraFacial' => 'HYDRA',
-                            'Aesthetic Products' => 'AESTHETIC',
-                            default => 'EQUIPMENT',
-                        };
-                        $promoImage = match ($navCategory->name) {
-                            'Laser Machines' => 'Laser Machines.png',
-                            'HydraFacial' => 'HydraFacial.png',
+                        // Dynamic promo label: use first word of category name, uppercased
+                        $promoLabel = strtoupper(explode(' ', $navCategory->name)[0]);
+                        // Dynamic promo image: check for known images, fall back to a default
+                        $knownImages = [
+                            'Laser Machines'     => 'Laser Machines.png',
+                            'HydraFacial'        => 'HydraFacial.png',
                             'Aesthetic Products' => 'Aesthetic Equipment.png',
-                            default => 'Aesthetic Equipment.png',
-                        };
+                            'Other Equipment'    => 'Aesthetic Equipment.png',
+                        ];
+                        $promoImage = $knownImages[$navCategory->name] ?? 'Aesthetic Equipment.png';
                         $isNavActive = $activeNavCategoryId === $navCategory->id;
                     @endphp
                     <div class="group relative">
