@@ -69,7 +69,7 @@
     <header class="border-b border-border bg-white">
         <div class="mx-auto flex h-[78px] max-w-[1180px] items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="{{ $siteName }} Home">
-                <img src="{{ asset('images/cosmex_logo.png') }}" alt="{{ $siteName }} Logo" class="h-[60px] w-auto object-contain">
+                <img src="{{ asset('images/COSMEX_LOGO.png') }}" alt="{{ $siteName }} Logo" class="h-[60px] w-auto object-contain">
             </a>
 
             <nav class="hidden items-center gap-1 lg:flex">

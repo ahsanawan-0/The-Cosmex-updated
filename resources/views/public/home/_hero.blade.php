@@ -50,7 +50,7 @@
 
                     <div class="order-1 lg:order-2">
                         <div class="relative mx-auto aspect-[4/3] max-h-[430px] lg:aspect-square lg:max-h-[560px]">
-                            <img src="{{ asset('images/cosmex-aesthetic-importer.png') }}" alt="Cosmex aesthetic machines"
+                            <img src="{{ asset('images/COSMEX-AESTHETIC-IMPORTER.png') }}" alt="Cosmex aesthetic machines"
                                 class="absolute inset-0 h-full w-full object-contain object-center"
                                 loading="eager" fetchpriority="high">
                         </div>
