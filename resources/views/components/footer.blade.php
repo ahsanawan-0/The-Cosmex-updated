@@ -12,7 +12,7 @@
         <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             <div>
                 <a href="{{ route('home') }}" class="inline-block">
-                    <img src="{{ asset('images/cosmex_logo.png') }}" alt="Cosmex Logo" class="h-[60px] w-auto object-contain">
+                    <img src="{{ asset('images/COSMEX_LOGO.png') }}" alt="Cosmex Logo" class="h-[60px] w-auto object-contain">
                 </a>
                 <p class="mt-5 max-w-sm text-sm leading-7 text-text-secondary">{{ $siteTagline }} imported for clinics, dermatologists, and beauty professionals.</p>
                 <div class="mt-6 flex items-center gap-5">
