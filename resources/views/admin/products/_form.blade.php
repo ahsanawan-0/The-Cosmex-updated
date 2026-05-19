@@ -22,6 +22,15 @@
                 </div>
 
                 <div class="md:col-span-2">
+                    <div class="mb-2 flex items-center justify-between">
+                        <label for="subtitle" class="text-sm font-medium text-zinc-700">Subtitle <span class="text-zinc-400 font-normal">(optional)</span></label>
+                        <span class="text-xs text-zinc-500"><span data-char-count="subtitle">{{ strlen((string) old('subtitle', data_get($product, 'subtitle'))) }}</span>/150</span>
+                    </div>
+                    <input id="subtitle" name="subtitle" type="text" maxlength="150" value="{{ old('subtitle', data_get($product, 'subtitle')) }}" placeholder="e.g. Dual Pump, Professional Grade, 7-in-1 System" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10">
+                    <p class="mt-1.5 text-xs text-zinc-400">Shown below the product name on cards. Keep it short and descriptive.</p>
+                </div>
+
+                <div class="md:col-span-2">
                     <label for="slug" class="mb-2 block text-sm font-medium text-zinc-700">Slug</label>
                     <input id="slug" name="slug" type="text" value="{{ $slugValue }}" data-slug-target class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10">
                     <p class="mt-2 text-sm text-zinc-500">Preview: <span data-slug-preview>{{ $productUrlPreview }}</span></p>
@@ -209,6 +218,7 @@
             const galleryInput = document.querySelector('[data-gallery-input]');
             const galleryPreview = document.querySelector('[data-gallery-preview]');
             const counters = {
+                subtitle: document.querySelector('[data-char-count="subtitle"]'),
                 seo_title: document.querySelector('[data-char-count="seo_title"]'),
                 seo_description: document.querySelector('[data-char-count="seo_description"]'),
             };
@@ -258,7 +268,7 @@
 
             [priceInput, salePriceInput].forEach((input) => input?.addEventListener('input', updateDiscount));
 
-            ['seo_title', 'seo_description'].forEach((id) => {
+            ['subtitle', 'seo_title', 'seo_description'].forEach((id) => {
                 document.getElementById(id)?.addEventListener('input', () => updateCounter(id));
                 updateCounter(id);
             });

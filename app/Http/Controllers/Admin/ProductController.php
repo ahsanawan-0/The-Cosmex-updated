@@ -343,20 +343,21 @@ class ProductController extends Controller
     private function normalizeProductFormData(Product $product): array
     {
         return [
-            'id' => $product->id,
-            'name' => $product->name,
-            'slug' => $product->slug,
-            'category_id' => $product->category_id,
-            'stock' => (int) $product->stock,
+            'id'                => $product->id,
+            'name'              => $product->name,
+            'subtitle'          => $product->subtitle,
+            'slug'              => $product->slug,
+            'category_id'       => $product->category_id,
+            'stock'             => (int) $product->stock,
             'short_description' => $product->short_description,
-            'description' => $product->description,
-            'price' => (float) $product->price,
-            'sale_price' => $product->sale_price !== null ? (float) $product->sale_price : null,
-            'status' => $product->status,
-            'seo_title' => $product->seo_title,
-            'seo_description' => $product->seo_description,
-            'main_image_url' => $product->main_image_url,
-            'gallery_images' => array_values($product->gallery_images ?? []),
+            'description'       => $product->description,
+            'price'             => (float) $product->price,
+            'sale_price'        => $product->sale_price !== null ? (float) $product->sale_price : null,
+            'status'            => $product->status,
+            'seo_title'         => $product->seo_title,
+            'seo_description'   => $product->seo_description,
+            'main_image_url'    => $product->main_image_url,
+            'gallery_images'    => array_values($product->gallery_images ?? []),
         ];
     }
 

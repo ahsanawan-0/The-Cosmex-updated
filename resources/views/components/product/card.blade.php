@@ -1,8 +1,4 @@
 @props(['product'])
-@php
-    $avgRating = round($product->avg_rating ?? 0);
-    $reviewCount = $product->review_count ?? 0;
-@endphp
 
 <article class="product-card group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 hover:-translate-y-1">
     {{-- Image Container --}}
@@ -50,19 +46,10 @@
             </h3>
         </a>
 
-        {{-- Star Rating --}}
-        <div class="flex items-center gap-1.5">
-            <div class="flex gap-0.5">
-                @for($i = 1; $i <= 5; $i++)
-                    <i class="fa-{{ $i <= $avgRating ? 'solid' : 'regular' }} fa-star text-[10px] {{ $i <= $avgRating ? 'text-amber-400' : 'text-zinc-300' }}"></i>
-                @endfor
-            </div>
-            @if($reviewCount > 0)
-                <span class="text-[10px] text-text-secondary">({{ $reviewCount }})</span>
-            @else
-                <span class="text-[10px] text-text-secondary">No reviews yet</span>
-            @endif
-        </div>
+        {{-- Subtitle --}}
+        @if(!empty($product->subtitle))
+            <p class="text-[11px] font-medium text-text-secondary leading-tight -mt-1">{{ $product->subtitle }}</p>
+        @endif
 
         {{-- Price --}}
         <div class="mt-auto flex items-center justify-between gap-2.5 pt-2">
