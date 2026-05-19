@@ -8,7 +8,7 @@
 @endphp
 
 <footer class="bg-white text-text-primary">
-    <div class="mx-auto max-w-[1180px] py-12">
+    <div class="mx-auto max-w-[1180px] px-4 py-12 sm:px-6 lg:px-8">
         <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             <div>
                 <a href="{{ route('home') }}" class="inline-block">
