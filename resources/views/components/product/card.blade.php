@@ -6,7 +6,7 @@
 
 <article class="product-card group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 hover:-translate-y-1">
     {{-- Image Container --}}
-    <div class="relative overflow-hidden bg-gradient-to-br from-[#F3F9FF] via-white to-[#FFF1E8]" style="aspect-ratio: 1 / 1;">
+    <div class="relative overflow-hidden bg-bg-light" style="aspect-ratio: 1 / 1;">
         <a href="{{ route('products.show', $product->slug) }}" class="block w-full h-full" aria-label="{{ $product->name }}">
             <img
                 src="{{ $product->main_image_url }}"

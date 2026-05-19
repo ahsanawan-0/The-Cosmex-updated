@@ -108,7 +108,7 @@
 
                     {{-- Main Image with Zoom --}}
                     <div class="flex-1">
-                        <div class="pdp-zoom-wrap aspect-square cursor-pointer rounded-[28px] bg-gradient-to-br from-[#F3F9FF] via-white to-[#FFF1E8] shadow-card" onclick="pdpOpenLightbox()" onmousemove="pdpZoomMove(event)" onmouseleave="pdpZoomReset()">
+                        <div class="pdp-zoom-wrap aspect-square cursor-pointer rounded-[28px] bg-bg-light shadow-card" onclick="pdpOpenLightbox()" onmousemove="pdpZoomMove(event)" onmouseleave="pdpZoomReset()">
                             <img id="pdp-main-img" src="{{ $allImages[0] }}" alt="{{ $product->name }}" class="h-full w-full object-contain p-5" loading="eager" fetchpriority="high">
                         </div>
                         <button onclick="pdpOpenLightbox()" class="mt-3 flex items-center gap-1.5 text-xs font-semibold text-text-secondary transition hover:text-primary">

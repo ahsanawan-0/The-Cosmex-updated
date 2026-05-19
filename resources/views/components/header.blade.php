@@ -117,7 +117,7 @@
                                             </a>
                                         @endforelse
                                     </div>
-                                    <div class="relative min-h-[260px] overflow-hidden bg-gradient-to-br from-[#F3F9FF] via-white to-[#FFF1E8] p-5 flex flex-col justify-between">
+                                    <div class="relative min-h-[260px] overflow-hidden bg-bg-light p-5 flex flex-col justify-between">
                                         <div class="relative z-10 flex items-center justify-between">
                                             <div>
                                                 <p class="font-heading text-lg font-bold text-text-primary">{{ $navCategory->name }}</p>
