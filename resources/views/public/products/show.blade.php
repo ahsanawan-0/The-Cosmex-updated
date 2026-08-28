@@ -4,10 +4,10 @@
     $seoTitle = $product->seo_title ?: $product->name . ' - Wholesale Supplier Pakistan | Cosmex Pvt Ltd';
     $seoDesc = $product->seo_description ?: 'Buy ' . $product->name . ' wholesale in Pakistan. Best price PKR ' . number_format($product->price) . '. Authentic clinic quality product. Inquire via WhatsApp.';
     $canonical = url('/products/' . $product->slug);
-    $whatsappNum = preg_replace('/\D+/', '', \App\Models\Setting::get('whatsapp_number', '923001234567'));
+    $whatsappNum = preg_replace('/\D+/', '', \App\Models\Setting::get('whatsapp_number'));
     $waMsg = rawurlencode('Hi, I want a wholesale inquiry for: ' . $product->name . "\nPrice: PKR " . number_format($product->sale_price ?? $product->price) . "\nLink: " . $canonical);
     $waLink = 'https://wa.me/' . $whatsappNum . '?text=' . $waMsg;
-    $phone = \App\Models\Setting::get('contact_phone', '+923001234567');
+    $phone = \App\Models\Setting::get('contact_phone');
 
     $allImages = [$product->main_image_url];
     if (!empty($product->gallery_images)) {

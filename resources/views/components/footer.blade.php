@@ -1,10 +1,10 @@
 @php
     $siteTagline = 'Professional Aesthetic Products & Machines';
-    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number', '+92 300 XXXXXXX');
-    $whatsAppLink = 'https://wa.me/'.preg_replace('/\D+/', '', $whatsAppNumber ?: '923001234567');
-    $instagram = \App\Models\Setting::get('social_instagram', '#');
-    $facebook = \App\Models\Setting::get('social_facebook', '#');
-    $tiktok = \App\Models\Setting::get('social_tiktok', '#');
+    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number');
+    $whatsAppLink = 'https://wa.me/'.preg_replace('/\D+/', '', $whatsAppNumber);
+    $instagram = \App\Models\Setting::get('social_instagram');
+    $facebook = \App\Models\Setting::get('social_facebook');
+    $tiktok = \App\Models\Setting::get('social_tiktok');
 @endphp
 
 <footer class="bg-white text-text-primary">
@@ -16,9 +16,9 @@
                 </a>
                 <p class="mt-5 max-w-sm text-sm leading-7 text-text-secondary">{{ $siteTagline }} imported for clinics, dermatologists, and beauty professionals.</p>
                 <div class="mt-6 flex items-center gap-5">
-                    <a href="{{ $facebook }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="{{ $instagram }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="{{ $tiktok }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    @if ($facebook)<a href="{{ $facebook }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>@endif
+                    @if ($instagram)<a href="{{ $instagram }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>@endif
+                    @if ($tiktok)<a href="{{ $tiktok }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>@endif
                     <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="text-text-secondary transition hover:text-primary" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
             </div>
@@ -50,9 +50,9 @@
             <div>
                 <h3 class="footer-title">Contact</h3>
                 <ul class="mt-6 space-y-4 text-sm text-text-secondary">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-primary"></i><span>{{ \App\Models\Setting::get('contact_phone', '0328-4333364') }}</span></li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-primary"></i><span>{{ \App\Models\Setting::get('contact_email', 'info@thecosmex.com') }}</span></li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-location-dot text-primary mt-1"></i><span>{{ \App\Models\Setting::get('address', '21-B, G Block, Johar Town, Lahore, Pakistan') }}</span></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-phone text-primary"></i><span>{{ \App\Models\Setting::get('contact_phone') }}</span></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-primary"></i><span>{{ \App\Models\Setting::get('contact_email') }}</span></li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-location-dot text-primary mt-1"></i><span>{{ \App\Models\Setting::get('address') }}</span></li>
                 </ul>
                 <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary mt-8 inline-flex items-center gap-2 text-sm">
                     <i class="fa-brands fa-whatsapp text-white"></i>

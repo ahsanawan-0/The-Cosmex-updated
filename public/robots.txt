@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /login
 Disallow: /search
-Sitemap: https://lahoreaestheticstraders.com/sitemap.xml
+Sitemap: https://thecosmex.com/sitemap.xml

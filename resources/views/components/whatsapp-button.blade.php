@@ -4,7 +4,7 @@
 ])
 
 @php
-    $number = preg_replace('/\D+/', '', \App\Models\Setting::get('whatsapp_number', env('WHATSAPP_NUMBER', '923001234567')));
+    $number = preg_replace('/\D+/', '', \App\Models\Setting::get('whatsapp_number'));
     $message = $product
         ? 'Hi, I want to order '.$product->name
         : 'Hi, I want to place an order.';

@@ -1,8 +1,8 @@
 @php
     $siteName = 'The Cosmex';
-    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number', '923001234567');
-    $contactPhone = \App\Models\Setting::get('contact_phone', '+92 300 1234567');
-    $contactEmail = \App\Models\Setting::get('contact_email', 'info@thecosmex.com');
+    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number');
+    $contactPhone = \App\Models\Setting::get('contact_phone');
+    $contactEmail = \App\Models\Setting::get('contact_email');
     $whatsAppLink = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsAppNumber);
     // Dynamically load ALL active top-level categories — controlled entirely by the admin portal
     $navCategories = \App\Models\Category::whereNull('parent_id')

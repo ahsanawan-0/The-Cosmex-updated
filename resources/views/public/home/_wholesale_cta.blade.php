@@ -1,5 +1,5 @@
 @php
-    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number', '923001234567');
+    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number');
     $whatsAppLink = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsAppNumber);
 @endphp
 

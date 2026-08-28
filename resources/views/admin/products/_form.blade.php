@@ -62,7 +62,8 @@
 
                 <div class="md:col-span-2">
                     <label for="description" class="mb-2 block text-sm font-medium text-zinc-700">Full Description</label>
-                    <textarea id="description" name="description" rows="8" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10">{{ old('description', data_get($product, 'description')) }}</textarea>
+                    <textarea id="description" name="description" rows="12" data-html-editor class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10">{{ old('description', data_get($product, 'description')) }}</textarea>
+                    <p class="mt-2 text-xs text-zinc-500">Use the editor for headings, bullet points, tables, links, and images inside the product description.</p>
                 </div>
             </div>
         </section>
@@ -197,8 +198,84 @@
 </div>
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         (() => {
+            const descriptionEditor = document.querySelector('[data-html-editor]');
+
+            if (descriptionEditor && !window.tinymce) {
+                const warning = document.createElement('p');
+                warning.className = 'mt-2 text-xs font-medium text-red-600';
+                warning.textContent =
+                    'Rich text editor failed to load, so pasted formatting will not be kept. Check your connection and reload before editing this description.';
+                descriptionEditor.insertAdjacentElement('afterend', warning);
+            }
+
+            if (descriptionEditor && window.tinymce) {
+                tinymce.init({
+                    selector: '[data-html-editor]',
+                    base_url: 'https://cdn.jsdelivr.net/npm/tinymce@6.8.5',
+                    suffix: '.min',
+                    height: 420,
+                    menubar: false,
+                    branding: false,
+                    promotion: false,
+                    convert_urls: false,
+                    plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+                    toolbar: 'undo redo | blocks | bold italic underline | forecolor backcolor | bullist numlist outdent indent | alignleft aligncenter alignright | link image media table | pastetext removeformat code fullscreen',
+                    block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Quote=blockquote',
+                    content_style: 'body { font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.7; color: #27272a; } img { max-width: 100%; height: auto; }',
+                    images_file_types: 'jpeg,jpg,png,webp',
+                    automatic_uploads: true,
+                    paste_data_images: true,
+                    paste_as_text: false,
+                    paste_merge_formats: true,
+                    // Retain inline styles that Chrome/Safari attach on copy, so pasted
+                    // content keeps its original look instead of collapsing to plain text.
+                    paste_webkit_styles: 'all',
+                    // Allow the markup real-world pastes rely on (styles, spans, tables).
+                    extended_valid_elements: 'span[style|class],div[style|class],p[style|class],table[style|class|border|cellpadding|cellspacing|width],thead,tbody,tfoot,tr[style|class],td[style|class|colspan|rowspan|width|height|align|valign],th[style|class|colspan|rowspan|width|height|align|valign],ul[style|class],ol[style|class],li[style|class],h1[style|class],h2[style|class],h3[style|class],h4[style|class],h5[style|class],h6[style|class],strong,b,em,i,u,s,sub,sup,br,hr,blockquote[style|class],a[href|target|rel|title|style|class],img[src|alt|title|width|height|style|class]',
+                    table_default_attributes: { border: '1' },
+                    table_default_styles: { 'border-collapse': 'collapse', width: '100%' },
+                    images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+                        const formData = new FormData();
+                        formData.append('image', blobInfo.blob(), blobInfo.filename());
+                        formData.append('folder', 'products/descriptions');
+
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', '{{ route('admin.images.upload') }}');
+                        xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]')?.content || '');
+                        xhr.upload.onprogress = (event) => {
+                            if (event.lengthComputable) {
+                                progress(event.loaded / event.total * 100);
+                            }
+                        };
+                        xhr.onload = () => {
+                            if (xhr.status < 200 || xhr.status >= 300) {
+                                reject(`Image upload failed with status ${xhr.status}`);
+                                return;
+                            }
+
+                            try {
+                                const json = JSON.parse(xhr.responseText);
+                                json.url ? resolve(json.url) : reject('Image upload response did not include a URL.');
+                            } catch (error) {
+                                reject('Invalid image upload response.');
+                            }
+                        };
+                        xhr.onerror = () => reject('Image upload failed.');
+                        xhr.send(formData);
+                    }),
+                    setup: (editor) => {
+                        editor.on('change keyup undo redo', () => editor.save());
+                    },
+                });
+
+                descriptionEditor.closest('form')?.addEventListener('submit', () => {
+                    tinymce.triggerSave();
+                });
+            }
+
             const slugify = (value) => value
                 .toLowerCase()
                 .trim()

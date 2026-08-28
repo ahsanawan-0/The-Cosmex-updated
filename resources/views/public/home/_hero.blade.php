@@ -1,8 +1,8 @@
 {{-- Hero Slider --}}
 
 @php
-    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number', '+92 300 XXXXXXX');
-    $whatsAppLink   = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsAppNumber ?: '923001234567');
+    $whatsAppNumber = \App\Models\Setting::get('whatsapp_number');
+    $whatsAppLink   = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsAppNumber);
 @endphp
 
 <section class="relative bg-bg-light" style="overflow:hidden;">
