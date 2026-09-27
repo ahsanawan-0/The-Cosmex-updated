@@ -61,10 +61,16 @@ class ImageHelper
             : false;
     }
 
-    public static function getUrl(?string $path, string $placeholder = '/images/placeholder-product.webp'): string
+    /**
+     * Resolve an image path to a URL, or null when nothing is actually there.
+     *
+     * Returning null lets callers try a second path before giving up on a
+     * placeholder, which a plain getUrl() cannot express.
+     */
+    public static function resolve(?string $path): ?string
     {
         if (blank($path)) {
-            return url(ltrim($placeholder, '/'));
+            return null;
         }
 
         if (Str::startsWith($path, ['http://', 'https://'])) {
@@ -84,11 +90,16 @@ class ImageHelper
         // Fall back to an image shipped with the repo, e.g. a record pointing at
         // 'categories/botox.webp' resolves to public/images/categories/botox.webp.
         // Uploads live on the public disk, which is not deployed, so this keeps
-        // seeded imagery working on servers that never received those uploads.
+        // bundled imagery working on servers that never received those uploads.
         if (is_file(public_path('images/'.$normalizedPath))) {
             return url('images/'.$normalizedPath);
         }
 
-        return url(ltrim($placeholder, '/'));
+        return null;
+    }
+
+    public static function getUrl(?string $path, string $placeholder = '/images/placeholder-product.webp'): string
+    {
+        return static::resolve($path) ?? url(ltrim($placeholder, '/'));
     }
 }

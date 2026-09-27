@@ -31,7 +31,14 @@ class Category extends Model
             ? (str_contains($this->image, '/') ? $this->image : 'categories/'.$this->image)
             : null;
 
-        return ImageHelper::getUrl($path, '/images/placeholder-category.webp');
+        // Categories often have no upload on a given environment, or point at one
+        // that never got deployed. Fall back to the bundled image named after the
+        // slug, so dropping public/images/categories/<slug>.webp is enough.
+        $bundled = $this->slug ? 'categories/'.$this->slug.'.webp' : null;
+
+        return ImageHelper::resolve($path)
+            ?? ImageHelper::resolve($bundled)
+            ?? url('images/placeholder-category.webp');
     }
 
     protected static function boot()

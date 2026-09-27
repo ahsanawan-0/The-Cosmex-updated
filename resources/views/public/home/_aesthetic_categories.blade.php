@@ -5,7 +5,7 @@
         ['name' => 'Botox',                     'slug' => 'botox'],
         ['name' => 'Dermal Fillers',            'slug' => 'dermal-fillers'],
         ['name' => 'Numbing Creams',            'slug' => 'numbing-creams'],
-        ['name' => 'Otesaly Meso Serum',        'slug' => 'meso-serum'],
+        ['name' => 'Otesaly Meso Serum',        'slug' => 'otesaly-meso-serum'],
         ['name' => 'Skin Whitening Injections', 'slug' => 'skin-whitening-injections'],
         ['name' => 'Stayve BB Glow',            'slug' => 'stayve-bb-glow'],
         ['name' => 'Microneedling',             'slug' => 'microneedling'],
