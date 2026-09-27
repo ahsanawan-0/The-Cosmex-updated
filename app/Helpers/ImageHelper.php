@@ -81,6 +81,14 @@ class ImageHelper
             return url(Storage::url($normalizedPath));
         }
 
+        // Fall back to an image shipped with the repo, e.g. a record pointing at
+        // 'categories/botox.webp' resolves to public/images/categories/botox.webp.
+        // Uploads live on the public disk, which is not deployed, so this keeps
+        // seeded imagery working on servers that never received those uploads.
+        if (is_file(public_path('images/'.$normalizedPath))) {
+            return url('images/'.$normalizedPath);
+        }
+
         return url(ltrim($placeholder, '/'));
     }
 }

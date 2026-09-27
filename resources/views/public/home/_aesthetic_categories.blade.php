@@ -5,7 +5,7 @@
         ['name' => 'Botox',                     'slug' => 'botox'],
         ['name' => 'Dermal Fillers',            'slug' => 'dermal-fillers'],
         ['name' => 'Numbing Creams',            'slug' => 'numbing-creams'],
-        ['name' => 'Otesaly Meso Serum',        'slug' => 'otesaly-meso-serum'],
+        ['name' => 'Otesaly Meso Serum',        'slug' => 'meso-serum'],
         ['name' => 'Skin Whitening Injections', 'slug' => 'skin-whitening-injections'],
         ['name' => 'Stayve BB Glow',            'slug' => 'stayve-bb-glow'],
         ['name' => 'Microneedling',             'slug' => 'microneedling'],
@@ -41,8 +41,11 @@
                 @foreach($aestheticProductCategories as $cat)
                     @php
                         $dbCat = $dbCategories->get($cat['slug']);
-                        $imageUrl = $dbCat ? $dbCat->image_url : asset('images/placeholder-category.webp');
-                        $linkUrl = $dbCat ? route('category.show', $dbCat->slug) : route('products.index');
+                    @endphp
+                    @continue(! $dbCat)
+                    @php
+                        $imageUrl = $dbCat->image_url;
+                        $linkUrl = route('category.show', $dbCat->slug);
                     @endphp
                     <a href="{{ $linkUrl }}"
                        class="group flex-none w-[160px] sm:w-[180px] lg:w-[200px] snap-start">
