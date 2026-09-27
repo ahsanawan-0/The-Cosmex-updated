@@ -34,7 +34,7 @@
             </a>
         </div>
 
-        {{-- Square Category Slider --}}
+        {{-- Circular Category Slider --}}
         <div class="relative">
             {{-- Scroll Container --}}
             <div id="aesth-slider" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 aesth-scroll">
@@ -48,38 +48,28 @@
                         $linkUrl = route('category.show', $dbCat->slug);
                     @endphp
                     <a href="{{ $linkUrl }}"
-                       class="group flex-none w-[160px] sm:w-[180px] lg:w-[200px] snap-start">
-                        <div class="relative aspect-square overflow-hidden rounded-2xl bg-zinc-100 border border-zinc-200/60 group-hover:border-primary/30 transition-all duration-300 shadow-sm group-hover:shadow-lg group-hover:shadow-primary/10">
+                       class="group flex-none w-[140px] sm:w-[160px] lg:w-[180px] snap-start text-center">
+                        <div class="relative aspect-square overflow-hidden rounded-full bg-zinc-100 ring-1 ring-zinc-200/70 shadow-sm transition-all duration-300 group-hover:ring-2 group-hover:ring-primary/40 group-hover:shadow-lg group-hover:shadow-primary/10">
                             <img
                                 src="{{ $imageUrl }}"
                                 alt="{{ $cat['name'] }}"
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 loading="lazy"
                             >
-                            {{-- Dark Gradient Overlay --}}
-                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent"></div>
-
-                            {{-- Category Name --}}
-                            <div class="absolute bottom-0 left-0 right-0 p-3">
-                                <p class="text-white text-[12px] font-semibold leading-tight text-center">{{ $cat['name'] }}</p>
-                            </div>
-
-                            {{-- Hover Arrow --}}
-                            <div class="absolute top-3 right-3 h-7 w-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                <i class="fa-solid fa-arrow-right text-white text-[10px]"></i>
-                            </div>
                         </div>
+
+                        <p class="mt-4 px-1 text-[13px] font-semibold leading-snug text-zinc-800 transition-colors group-hover:text-primary">{{ $cat['name'] }}</p>
                     </a>
                 @endforeach
             </div>
 
             {{-- Prev/Next Arrows (desktop) --}}
-            <button onclick="document.getElementById('aesth-slider').scrollBy({left:-220,behavior:'smooth'})"
-                    class="hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 h-10 w-10 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-md text-zinc-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 z-10">
+            <button onclick="document.getElementById('aesth-slider').scrollBy({left:-196,behavior:'smooth'})"
+                    class="hidden lg:flex absolute -left-5 top-[38%] -translate-y-1/2 h-10 w-10 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-md text-zinc-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 z-10">
                 <i class="fa-solid fa-chevron-left text-xs"></i>
             </button>
-            <button onclick="document.getElementById('aesth-slider').scrollBy({left:220,behavior:'smooth'})"
-                    class="hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 h-10 w-10 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-md text-zinc-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 z-10">
+            <button onclick="document.getElementById('aesth-slider').scrollBy({left:196,behavior:'smooth'})"
+                    class="hidden lg:flex absolute -right-5 top-[38%] -translate-y-1/2 h-10 w-10 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-md text-zinc-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 z-10">
                 <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>
         </div>
