@@ -29,6 +29,8 @@
 
     @include('public.home._videos')
 
+    @include('public.home._blog')
+
     @include('public.home._reviews', ['featuredReviews' => $featuredReviews])
     @include('public.home._wholesale_cta')
 @endsection

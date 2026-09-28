@@ -342,6 +342,9 @@
                         <tr><th class="text-left font-semibold text-text-primary">Payment</th><td>Cash on delivery available nationwide</td></tr>
                         <tr><th class="text-left font-semibold text-text-primary">Returns</th><td>Damaged, defective or incorrect items reported within 3 days are replaced or refunded</td></tr>
                         <tr><th class="text-left font-semibold text-text-primary">Supplied to</th><td>Clinics, dermatologists and aesthetic professionals</td></tr>
+                        @if ($guide)
+                            <tr><th class="text-left font-semibold text-text-primary">Buying guide</th><td><a href="{{ route('blog.show', $guide->slug) }}">{{ $guide->title }}</a></td></tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

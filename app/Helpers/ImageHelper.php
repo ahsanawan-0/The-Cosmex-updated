@@ -16,7 +16,9 @@ class ImageHelper
 
         if ($extension === 'webp') {
             $path = $file->storeAs($folder, "{$filename}.webp", 'public');
-            static::makeThumbnail($path);
+            if ($folder === 'products') {
+                static::makeThumbnail($path);
+            }
 
             return $path;
         }
@@ -42,7 +44,9 @@ class ImageHelper
                 if ($contents !== false) {
                     $path = "{$folder}/{$filename}.webp";
                     Storage::disk('public')->put($path, $contents);
-                    static::makeThumbnail($path);
+                    if ($folder === 'products') {
+                        static::makeThumbnail($path);
+                    }
 
                     return $path;
                 }
@@ -50,7 +54,9 @@ class ImageHelper
         }
 
         $path = $file->storeAs($folder, "{$filename}.{$extension}", 'public');
-        static::makeThumbnail($path);
+        if ($folder === 'products') {
+            static::makeThumbnail($path);
+        }
 
         return $path;
     }

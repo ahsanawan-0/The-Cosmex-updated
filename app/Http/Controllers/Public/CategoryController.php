@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Public\Concerns\ListingFilters;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -52,10 +53,11 @@ class CategoryController extends Controller
         $priceRange = ['min' => $stats['min'] ?? 0, 'max' => $stats['max'] ?? 0];
         $sort = $filters['sort'];
         $seo = $category->seoCopy($stats);
+        $guides = Post::published()->forCategory($category)->latest('published_at')->take(3)->get();
 
         // Filtered/sorted variants and empty categories are kept out of the index.
         $noindex = $stats['count'] === 0 || $this->isFilteredListing($request);
 
-        return view('public.categories.show', compact('category', 'products', 'sort', 'priceRange', 'filters', 'stats', 'seo', 'noindex'));
+        return view('public.categories.show', compact('category', 'products', 'sort', 'priceRange', 'filters', 'stats', 'seo', 'noindex', 'guides'));
     }
 }

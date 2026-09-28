@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Response;
 
@@ -23,6 +24,8 @@ class SitemapController extends Controller
             ->select(['id', 'slug', 'updated_at'])
             ->get();
 
+        $posts = Post::published()->latest('published_at')->get(['slug', 'cover_image', 'updated_at', 'published_at']);
+
         $latestProductUpdate = optional($products->max('updated_at'))->toDateString();
 
         $pages = [
@@ -35,6 +38,7 @@ class SitemapController extends Controller
                 )),
             ],
             ['loc' => route('products.index'), 'lastmod' => $latestProductUpdate ?? $this->viewDate('public/products/index')],
+            ['loc' => route('blog.index'), 'lastmod' => optional($posts->max('updated_at'))->toDateString() ?? $this->viewDate('public/blog/index')],
             ['loc' => route('about'), 'lastmod' => $this->viewDate('public/pages/about')],
             ['loc' => route('contact'), 'lastmod' => $this->viewDate('public/pages/contact')],
             ['loc' => route('privacy'), 'lastmod' => $this->viewDate('public/pages/privacy')],
@@ -42,7 +46,7 @@ class SitemapController extends Controller
         ];
 
         return response()
-            ->view('sitemap', compact('pages', 'products', 'categories'))
+            ->view('sitemap', compact('pages', 'products', 'categories', 'posts'))
             ->header('Content-Type', 'application/xml; charset=UTF-8')
             ->header('Cache-Control', 'public, max-age=3600');
     }

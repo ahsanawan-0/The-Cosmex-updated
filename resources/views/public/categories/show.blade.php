@@ -193,6 +193,22 @@
         </div>
     </section>
 
+    {{-- Related blog guides --}}
+    @if ($guides->isNotEmpty() && $products->onFirstPage())
+        <section class="bg-bg-light pb-4 pt-2">
+            <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
+                <div class="rounded-2xl border border-border bg-white p-5 shadow-card">
+                    <p class="text-sm font-bold uppercase tracking-wide text-text-primary">Buying guides for {{ $category->name }}</p>
+                    <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+                        @foreach ($guides as $guide)
+                            <li><a href="{{ route('blog.show', $guide->slug) }}" class="inline-flex items-start gap-2 text-sm font-semibold text-primary hover:underline"><i class="fa-solid fa-book-open mt-1 text-xs" aria-hidden="true"></i>{{ $guide->title }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- Buying guide: only on page 1, so paginated pages do not repeat it --}}
     @if ($seo['content'] && $products->onFirstPage() && $stats['count'] > 0)
         <section class="bg-white py-12 lg:py-16">

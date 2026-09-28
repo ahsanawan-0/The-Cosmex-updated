@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Contracts\View\View;
@@ -58,7 +59,10 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
+        $latestPosts = Post::published()->with('category')->latest('published_at')->take(3)->get();
+
         return view('public.home.index', compact(
+            'latestPosts',
             'categories',
             'hydrafacialProducts',
             'laserProducts',

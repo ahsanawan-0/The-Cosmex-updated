@@ -22,6 +22,16 @@
     </url>
     @endforeach
 
+    @foreach($posts as $post)
+    <url>
+        <loc>{{ route('blog.show', $post->slug) }}</loc>
+        <lastmod>{{ $post->updated_at->toDateString() }}</lastmod>
+        <image:image>
+            <image:loc>{{ $post->cover_url }}</image:loc>
+        </image:image>
+    </url>
+    @endforeach
+
     @foreach($categories as $category)
     <url>
         <loc>{{ url('/category/' . $category->slug) }}</loc>

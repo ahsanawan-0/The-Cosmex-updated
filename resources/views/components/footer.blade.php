@@ -30,6 +30,7 @@
                     @foreach ($footerTopCategories as $footerCategory)
                         <li><a href="{{ route('category.show', $footerCategory->slug) }}" class="transition hover:text-primary">{{ $footerCategory->name }}</a></li>
                     @endforeach
+                    <li><a href="{{ route('blog.index') }}" class="transition hover:text-primary">Guides &amp; Blog</a></li>
                     <li><a href="{{ route('about') }}" class="transition hover:text-primary">About Us</a></li>
                     <li><a href="{{ route('contact') }}" class="transition hover:text-primary">Contact Us</a></li>
                 </ul>

@@ -73,13 +73,13 @@
     </div>
 
     <header class="border-b border-border bg-white">
-        <div class="mx-auto flex h-[78px] max-w-[1180px] items-center justify-between">
+        <div class="relative mx-auto flex h-[78px] max-w-[1180px] items-center justify-between gap-4 px-4 xl:px-0">
             <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="{{ $siteName }} Home">
                 <img src="{{ asset('images/COSMEX_LOGO.png') }}" alt="{{ $siteName }} Logo" width="240" height="60" class="h-[60px] w-auto object-contain">
             </a>
 
-            <nav class="hidden items-center gap-1 lg:flex">
-                <a href="{{ route('products.index') }}" class="rounded-full px-4 py-3 text-xs font-bold uppercase text-text-primary transition hover:bg-bg-light hover:text-accent">All Products</a>
+            <nav class="hidden items-center gap-0.5 lg:flex xl:gap-1">
+                <a href="{{ route('products.index') }}" class="rounded-full px-3 py-3 text-xs font-bold uppercase xl:px-4 text-text-primary transition hover:bg-bg-light hover:text-accent">All Products</a>
 
                 @foreach ($navCategories as $navCategory)
                     @php
@@ -95,13 +95,14 @@
                         $promoImage = $knownImages[$navCategory->slug] ?? 'menu-aesthetic-equipment-320.webp';
                         $isNavActive = $activeNavCategoryId === $navCategory->id;
                     @endphp
-                    <div class="group relative">
-                        <a href="{{ route('category.show', $navCategory->slug) }}" class="inline-flex items-center gap-2 rounded-full px-4 py-3 text-xs font-bold uppercase transition {{ $isNavActive ? 'bg-bg-light text-accent' : 'text-text-primary hover:bg-bg-light hover:text-accent' }}">
+                    {{-- Dropdowns are centred under the header row (not the trigger) so they never run off-screen --}}
+                    <div class="group">
+                        <a href="{{ route('category.show', $navCategory->slug) }}" class="relative inline-flex items-center gap-2 rounded-full after:absolute after:inset-x-0 after:top-full after:h-6 after:content-['']  px-3 py-3 text-xs font-bold uppercase xl:px-4 transition {{ $isNavActive ? 'bg-bg-light text-accent' : 'text-text-primary hover:bg-bg-light hover:text-accent' }}">
                             {{ $navCategory->name }}
                             <i class="fa-solid fa-chevron-down text-[10px]"></i>
                         </a>
 
-                        <div class="invisible absolute left-1/2 top-full w-[860px] max-w-[90vw] -translate-x-1/2 translate-y-3 opacity-0 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                        <div class="invisible absolute left-1/2 top-full z-50 w-[860px] max-w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-3 opacity-0 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                             <div class="overflow-hidden rounded-[24px] border border-border bg-white shadow-hover">
                                 <div class="grid grid-cols-[1fr_260px]">
                                     <div class="grid max-h-[420px] grid-cols-2 gap-x-4 gap-y-1 overflow-y-auto p-5 hide-scrollbar">
@@ -138,6 +139,8 @@
                         </div>
                     </div>
                 @endforeach
+
+                <a href="{{ route('blog.index') }}" class="rounded-full px-3 py-3 text-xs font-bold uppercase xl:px-4 transition {{ request()->routeIs('blog.*') ? 'bg-bg-light text-accent' : 'text-text-primary hover:bg-bg-light hover:text-accent' }}">Guides</a>
             </nav>
 
             <div class="flex items-center gap-2">
@@ -181,6 +184,10 @@
                 <i class="fa-solid fa-arrow-right text-xs text-primary"></i>
             </a>
         @endforeach
+        <a href="{{ route('blog.index') }}" class="flex min-h-12 items-center justify-between rounded-2xl bg-bg-light px-4 text-sm font-bold text-text-primary">
+            Guides &amp; Price Guides
+            <i class="fa-solid fa-arrow-right text-xs text-primary"></i>
+        </a>
     </div>
 </section>
 

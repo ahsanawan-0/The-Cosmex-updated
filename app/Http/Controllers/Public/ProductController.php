@@ -6,6 +6,7 @@ use App\Helpers\SeoHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Public\Concerns\ListingFilters;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -116,7 +117,14 @@ class ProductController extends Controller
 
         $schema = $this->productSchema($product, $canonical, $allImages, $reviews);
 
-        return view('public.products.show', compact('product', 'relatedProducts', 'reviews', 'avgRating', 'canonical', 'allImages', 'seo', 'schema'));
+        // A buying guide for this product's category (or its parent), if one exists.
+        $guide = Post::published()
+            ->whereIn('category_slug', array_filter([$product->category?->slug, $product->category?->parent?->slug]))
+            ->orderByRaw('CASE WHEN category_slug = ? THEN 0 ELSE 1 END', [$product->category?->slug])
+            ->latest('published_at')
+            ->first();
+
+        return view('public.products.show', compact('product', 'relatedProducts', 'reviews', 'avgRating', 'canonical', 'allImages', 'seo', 'schema', 'guide'));
     }
 
     private function productSchema(Product $product, string $canonical, array $images, $reviews): array
