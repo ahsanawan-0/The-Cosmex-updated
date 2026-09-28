@@ -1,8 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Shop All Aesthetic Products & Machines | Cosmex Pvt Ltd Pakistan')
-@section('meta_description', 'Browse our complete collection of authentic clinic quality products. Shop by category or price. Inquire via WhatsApp.')
-@section('canonical', url('/products'))
+@php
+    $activeFilters = array_filter(\Illuminate\Support\Arr::except($filters, ['sort']));
+    $listingUrl = url('/products');
+    $pageCanonical = $products->currentPage() > 1 ? $listingUrl . '?page=' . $products->currentPage() : $listingUrl;
+@endphp
+
+@section('title', 'All Aesthetic Machines & Clinic Products' . ($products->currentPage() > 1 ? ' – Page ' . $products->currentPage() : ''))
+@section('meta_description', 'Browse ' . $stats['count'] . ' aesthetic machines and clinic products with prices in PKR: laser, HydraFacial and HIFU machines, microneedling pens, exosomes and more.')
+@section('canonical', $pageCanonical)
+@if ($noindex)
+    @section('robots', 'noindex, follow')
+@endif
 
 @section('content')
     {{-- Breadcrumb --}}
@@ -10,8 +19,11 @@
         <div class="mx-auto max-w-[1280px] px-4 py-4 sm:px-6 lg:px-8">
             <x-breadcrumb :items="[
                 ['label' => 'Home', 'url' => route('home')],
-                ['label' => $currentCategory ? $currentCategory->name : 'All Products'],
+                ['label' => 'All Products', 'url' => $listingUrl],
             ]" />
+            <h1 class="mt-3 font-heading text-2xl font-bold text-text-primary sm:text-3xl">
+                {{ $currentCategory ? $currentCategory->name : 'All Aesthetic Machines & Clinic Products' }}
+            </h1>
         </div>
     </div>
 
@@ -19,7 +31,7 @@
         <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
 
             {{-- Active Filter Badges --}}
-            @if (array_filter($filters))
+            @if ($activeFilters)
                 <div class="mb-6 flex flex-wrap items-center gap-2">
                     <span class="text-sm font-medium text-zinc-500">Active Filters:</span>
                     @if (!empty($filters['category']))
@@ -50,19 +62,19 @@
                 <aside class="hidden w-full shrink-0 lg:block lg:w-[280px]">
                     <div class="sticky top-52 space-y-8">
                         <form action="{{ route('products.index') }}" method="GET" id="filterForm">
-                            @if (request('sort'))
-                                <input type="hidden" name="sort" value="{{ request('sort') }}">
+                            @if ($sort !== 'newest')
+                                <input type="hidden" name="sort" value="{{ $sort }}">
                             @endif
 
                             {{-- Categories --}}
                             <div class="rounded-2xl border border-border bg-white p-5 shadow-card">
-                                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Categories</h3>
+                                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Categories</p>
                                 <ul class="mt-4 max-h-[320px] space-y-2 overflow-y-auto pr-1">
                                     @foreach ($categories as $cat)
                                         <li>
                                             <label class="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition hover:bg-zinc-50">
                                                 <input type="radio" name="category" value="{{ $cat->slug }}"
-                                                    {{ request('category') === $cat->slug ? 'checked' : '' }}
+                                                    {{ $filters['category'] === $cat->slug ? 'checked' : '' }}
                                                     onchange="document.getElementById('filterForm').submit()"
                                                     class="h-4 w-4 rounded border-zinc-300 text-primary focus:ring-primary">
                                                 <span class="flex-1 text-zinc-700">{{ $cat->name }}</span>
@@ -71,20 +83,20 @@
                                         </li>
                                     @endforeach
                                 </ul>
-                                @if (request('category'))
+                                @if ($filters['category'])
                                     <a href="{{ route('products.index', request()->except('category')) }}" class="mt-3 block text-xs text-red-500 hover:underline">Clear category</a>
                                 @endif
                             </div>
 
                             {{-- Price Range --}}
                             <div class="mt-6 rounded-2xl border border-border bg-white p-5 shadow-card">
-                                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Price Range</h3>
+                                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Price Range</p>
                                 <p class="mt-1 text-xs text-zinc-400">PKR {{ number_format($priceRange['min']) }} – {{ number_format($priceRange['max']) }}</p>
                                 <div class="mt-4 flex items-center gap-2">
-                                    <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Min"
+                                    <input type="number" name="min_price" value="{{ $filters['min_price'] }}" aria-label="Minimum price" placeholder="Min"
                                         class="h-10 w-full rounded-lg border border-border px-3 text-sm text-zinc-700 outline-none focus:border-primary focus:ring-1 focus:ring-primary">
                                     <span class="text-zinc-300">–</span>
-                                    <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="Max"
+                                    <input type="number" name="max_price" value="{{ $filters['max_price'] }}" aria-label="Maximum price" placeholder="Max"
                                         class="h-10 w-full rounded-lg border border-border px-3 text-sm text-zinc-700 outline-none focus:border-primary focus:ring-1 focus:ring-primary">
                                 </div>
                                 <button type="submit" class="btn-primary mt-3 w-full text-center text-sm">Apply Price</button>
@@ -92,17 +104,17 @@
 
                             {{-- Toggle Filters --}}
                             <div class="mt-6 rounded-2xl border border-border bg-white p-5 shadow-card">
-                                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Show Only</h3>
+                                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Show Only</p>
                                 <div class="mt-4 space-y-3">
 
                                     <label class="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-700">
-                                        <input type="checkbox" name="on_sale" value="1" {{ request('on_sale') ? 'checked' : '' }}
+                                        <input type="checkbox" name="on_sale" value="1" {{ $filters['on_sale'] ? 'checked' : '' }}
                                             onchange="document.getElementById('filterForm').submit()"
                                             class="h-4 w-4 rounded border-zinc-300 text-primary focus:ring-primary">
                                         On Sale
                                     </label>
                                     <label class="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-700">
-                                        <input type="checkbox" name="in_stock" value="1" {{ request('in_stock') ? 'checked' : '' }}
+                                        <input type="checkbox" name="in_stock" value="1" {{ $filters['in_stock'] ? 'checked' : '' }}
                                             onchange="document.getElementById('filterForm').submit()"
                                             class="h-4 w-4 rounded border-zinc-300 text-primary focus:ring-primary">
                                         In Stock
@@ -125,7 +137,7 @@
 
                         <div class="flex items-center gap-2 sm:gap-3">
                             {{-- Mobile filter toggle --}}
-                            <button type="button" data-mobile-filter-toggle class="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:border-primary lg:hidden sm:h-10 sm:w-auto sm:px-4 sm:rounded-lg sm:gap-2">
+                            <button type="button" data-mobile-filter-toggle aria-label="Show filters" class="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition hover:border-primary lg:hidden sm:h-10 sm:w-auto sm:px-4 sm:rounded-lg sm:gap-2">
                                 <i class="fa-solid fa-sliders text-sm"></i>
                                 <span class="hidden sm:inline text-sm font-medium">Filters</span>
                             </button>
@@ -137,11 +149,10 @@
                                     <i class="fa-solid fa-arrow-down-wide-short text-sm"></i>
                                 </div>
                                 {{-- The actual select --}}
-                                <select onchange="window.location.href=this.value" class="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0 sm:static sm:h-10 sm:w-auto sm:rounded-lg sm:border sm:border-border sm:bg-white sm:px-3 sm:pr-8 sm:text-sm sm:text-zinc-700 sm:opacity-100 sm:outline-none sm:focus:border-primary sm:focus:ring-1 sm:focus:ring-primary sm:appearance-none">
-                                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}" {{ $sort === 'newest' ? 'selected' : '' }}>Newest</option>
-                                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}" {{ $sort === 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
-                                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}" {{ $sort === 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
-                                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'bestseller']) }}" {{ $sort === 'bestseller' ? 'selected' : '' }}>Best Sellers</option>
+                                <select aria-label="Sort products" onchange="window.location.href=this.value" class="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0 sm:static sm:h-10 sm:w-auto sm:rounded-lg sm:border sm:border-border sm:bg-white sm:px-3 sm:pr-8 sm:text-sm sm:text-zinc-700 sm:opacity-100 sm:outline-none sm:focus:border-primary sm:focus:ring-1 sm:focus:ring-primary sm:appearance-none">
+                                    <option value="{{ request()->fullUrlWithQuery(['sort' => null, 'page' => null]) }}" {{ $sort === 'newest' ? 'selected' : '' }}>Newest</option>
+                                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_low', 'page' => null]) }}" {{ $sort === 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
+                                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_high', 'page' => null]) }}" {{ $sort === 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
                                 </select>
                                 {{-- Desktop Select Arrow --}}
                                 <div class="pointer-events-none absolute inset-y-0 right-0 hidden sm:flex items-center px-2 text-zinc-500">
@@ -155,13 +166,13 @@
                     @if ($products->count())
                         <div id="product-grid" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
                             @foreach ($products as $product)
-                                <x-product.card :product="$product" />
+                                <x-product.card :product="$product" :eager="$loop->index < 4" />
                             @endforeach
                         </div>
 
                         @if ($products->hasPages())
-                            {{-- Infinite Scroll & Progress --}}
-                            <div class="mt-16 mb-8 text-center" id="pagination-container">
+                            {{-- Infinite Scroll & Progress (the links also work without JavaScript) --}}
+                            <nav class="mt-16 mb-8 text-center" id="pagination-container" aria-label="Pagination">
                                 <p class="text-[13px] text-zinc-500 mb-4 font-medium">
                                     You've viewed <span id="current-count">{{ $products->count() }}</span> of {{ $products->total() }} products
                                 </p>
@@ -169,12 +180,17 @@
                                     <div id="progress-bar" class="h-full bg-primary transition-all duration-500 ease-out" style="width: {{ ($products->count() / $products->total()) * 100 }}%"></div>
                                 </div>
                                 
-                                @if($products->hasMorePages())
-                                    <button id="load-more-btn" data-url="{{ $products->nextPageUrl() }}" class="inline-flex min-h-12 min-w-[200px] items-center justify-center rounded-full border border-primary px-8 text-xs font-bold uppercase text-primary transition-colors duration-300 hover:bg-primary hover:text-white">
-                                        Load More
-                                    </button>
+                                @if ($products->onFirstPage() === false)
+                                    <a href="{{ $products->currentPage() === 2 ? request()->fullUrlWithQuery(['page' => null]) : $products->previousPageUrl() }}" rel="prev" class="mr-3 inline-flex min-h-12 items-center justify-center rounded-full border border-border px-6 text-xs font-bold uppercase text-text-secondary transition hover:border-primary hover:text-primary">
+                                        Previous Page
+                                    </a>
                                 @endif
-                            </div>
+                                @if($products->hasMorePages())
+                                    <a id="load-more-btn" href="{{ $products->nextPageUrl() }}" rel="next" data-url="{{ $products->nextPageUrl() }}" class="inline-flex min-h-12 min-w-[200px] items-center justify-center rounded-full border border-primary px-8 text-xs font-bold uppercase text-primary transition-colors duration-300 hover:bg-primary hover:text-white">
+                                        Load More
+                                    </a>
+                                @endif
+                            </nav>
                         @endif
                     @else
                         {{-- Empty State --}}
@@ -182,7 +198,7 @@
                             <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-zinc-100 text-4xl text-zinc-300">
                                 <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
                             </div>
-                            <h3 class="mt-6 font-heading text-2xl text-zinc-900">No products found</h3>
+                            <h2 class="mt-6 font-heading text-2xl text-zinc-900">No products found</h2>
                             <p class="mt-2 max-w-sm text-sm text-zinc-500">Try adjusting your filters or search to find what you're looking for.</p>
                             <a href="{{ route('products.index') }}" class="btn-primary mt-6 inline-flex items-center text-sm">Clear All Filters</a>
                         </div>
@@ -205,19 +221,19 @@
                 </div>
                 <div class="flex-1 overflow-y-auto px-5 py-6">
                     <form action="{{ route('products.index') }}" method="GET" id="mobileFilterForm">
-                        @if (request('sort'))
-                            <input type="hidden" name="sort" value="{{ request('sort') }}">
+                        @if ($sort !== 'newest')
+                            <input type="hidden" name="sort" value="{{ $sort }}">
                         @endif
 
                         {{-- Categories --}}
                         <div class="mb-6">
-                            <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Categories</h3>
+                            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Categories</p>
                             <ul class="mt-3 space-y-2">
                                 @foreach ($categories as $cat)
                                     <li>
                                         <label class="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-700">
                                             <input type="radio" name="category" value="{{ $cat->slug }}"
-                                                {{ request('category') === $cat->slug ? 'checked' : '' }}
+                                                {{ $filters['category'] === $cat->slug ? 'checked' : '' }}
                                                 class="h-4 w-4 rounded border-zinc-300 text-primary focus:ring-primary">
                                             {{ $cat->name }} <span class="text-xs text-zinc-400">({{ $cat->products_count }})</span>
                                         </label>
@@ -228,28 +244,28 @@
 
                         {{-- Price --}}
                         <div class="mb-6">
-                            <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Price Range</h3>
+                            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Price Range</p>
                             <div class="mt-3 flex items-center gap-2">
-                                <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Min"
+                                <input type="number" name="min_price" value="{{ $filters['min_price'] }}" aria-label="Minimum price" placeholder="Min"
                                     class="h-10 w-full rounded-lg border border-zinc-200 px-3 text-sm">
                                 <span class="text-zinc-300">–</span>
-                                <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="Max"
+                                <input type="number" name="max_price" value="{{ $filters['max_price'] }}" aria-label="Maximum price" placeholder="Max"
                                     class="h-10 w-full rounded-lg border border-zinc-200 px-3 text-sm">
                             </div>
                         </div>
 
                         {{-- Toggles --}}
                         <div class="mb-6">
-                            <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Show Only</h3>
+                            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-900">Show Only</p>
                             <div class="mt-3 space-y-3">
 
                                 <label class="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-700">
-                                    <input type="checkbox" name="on_sale" value="1" {{ request('on_sale') ? 'checked' : '' }}
+                                    <input type="checkbox" name="on_sale" value="1" {{ $filters['on_sale'] ? 'checked' : '' }}
                                         class="h-4 w-4 rounded border-zinc-300 text-primary">
                                     On Sale
                                 </label>
                                 <label class="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-700">
-                                    <input type="checkbox" name="in_stock" value="1" {{ request('in_stock') ? 'checked' : '' }}
+                                    <input type="checkbox" name="in_stock" value="1" {{ $filters['in_stock'] ? 'checked' : '' }}
                                         class="h-4 w-4 rounded border-zinc-300 text-primary">
                                     In Stock
                                 </label>

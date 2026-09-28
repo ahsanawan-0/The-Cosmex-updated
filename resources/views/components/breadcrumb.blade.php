@@ -1,17 +1,27 @@
 @props(['items' => []])
 
+@php
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => collect($items)->values()->map(fn ($item, $i) => array_filter([
+            '@type' => 'ListItem',
+            'position' => $i + 1,
+            'name' => \App\Helpers\SeoHelper::clean($item['label']),
+            'item' => $item['url'] ?? null,
+        ]))->all(),
+    ];
+@endphp
+
 <nav aria-label="Breadcrumb" class="text-sm">
-    <ol class="flex flex-wrap items-center gap-1.5 text-zinc-500" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <ol class="flex flex-wrap items-center gap-1.5 text-zinc-500">
         @foreach ($items as $i => $item)
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <li>
                 @if (isset($item['url']) && ! $loop->last)
-                    <a href="{{ $item['url'] }}" itemprop="item" class="transition hover:text-primary">
-                        <span itemprop="name">{{ $item['label'] }}</span>
-                    </a>
+                    <a href="{{ $item['url'] }}" class="transition hover:text-primary">{{ $item['label'] }}</a>
                 @else
-                    <span itemprop="name" class="font-medium text-zinc-900">{{ $item['label'] }}</span>
+                    <span class="font-medium text-zinc-900" aria-current="page">{{ $item['label'] }}</span>
                 @endif
-                <meta itemprop="position" content="{{ $i + 1 }}">
             </li>
             @unless ($loop->last)
                 <li aria-hidden="true" class="text-zinc-300">/</li>
@@ -19,3 +29,4 @@
         @endforeach
     </ol>
 </nav>
+<script type="application/ld+json">{!! \App\Helpers\SeoHelper::json($breadcrumbSchema) !!}</script>

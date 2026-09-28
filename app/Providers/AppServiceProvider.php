@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Category;
-use App\Services\CacheService;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,9 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS for all generated URLs and assets on production
+        // In production every generated URL (links, canonicals, sitemap, schema)
+        // uses APP_URL, never the host or /public base the request came in on.
         if (config('app.env') === 'production') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceRootUrl(rtrim((string) config('app.url'), '/'));
+            URL::forceScheme('https');
         }
 
         // Custom gold-themed pagination
@@ -36,23 +37,16 @@ class AppServiceProvider extends ServiceProvider
         View::share('siteName', config('site.name'));
         View::share('siteTagline', config('site.tagline'));
 
-        // Share navigation categories with header (for mega menu / nav links)
-        View::composer('components.header', function ($view) {
-            $navCategories = Category::where('status', 'active')
-                ->orderBy('sort_order')
-                ->get(['id', 'name', 'slug']);
-
-            $view->with('navCategories', $navCategories);
-        });
-
-        // Share categories with footer too
+        // Footer links come from the database so renamed or empty categories
+        // can never produce a broken or thin link on every page.
         View::composer('components.footer', function ($view) {
-            $footerCategories = Category::where('status', 'active')
+            $categories = Category::where('status', 'active')
+                ->withActiveProducts()
                 ->orderBy('sort_order')
-                ->take(6)
-                ->get(['id', 'name', 'slug']);
+                ->get(['id', 'name', 'slug', 'parent_id']);
 
-            $view->with('footerCategories', $footerCategories);
+            $view->with('footerTopCategories', $categories->whereNull('parent_id')->values());
+            $view->with('footerPopularCategories', $categories->whereNotNull('parent_id')->take(6)->values());
         });
     }
 }

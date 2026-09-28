@@ -4,12 +4,13 @@
     $contactPhone = \App\Models\Setting::get('contact_phone');
     $contactEmail = \App\Models\Setting::get('contact_email');
     $whatsAppLink = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsAppNumber);
-    // Dynamically load ALL active top-level categories — controlled entirely by the admin portal
+    // Only categories that contain active products appear in navigation.
     $navCategories = \App\Models\Category::whereNull('parent_id')
         ->where('status', 'active')
+        ->withActiveProducts()
         ->with([
             'children' => function ($query) {
-                $query->where('status', 'active')->orderBy('sort_order');
+                $query->where('status', 'active')->withActiveProducts()->orderBy('sort_order');
             },
             'products' => function ($query) {
                 $query->where('status', 'active')->oldest();
@@ -18,6 +19,14 @@
         ->orderBy('sort_order')
         ->get();
     $isActive = fn (...$patterns) => request()->routeIs(...$patterns);
+
+    // Quick links in the search sheet point at category pages (crawlable,
+    // indexable) rather than at /search?q= URLs, which robots.txt blocks.
+    $quickCategories = $navCategories
+        ->flatMap(fn ($category) => collect([$category])->merge($category->children))
+        ->keyBy('slug')
+        ->only(['aesthetic-machines', 'laser-machines', 'hydrafacial', 'exosomes', 'numbing-creams', 'otesaly-meso-serum'])
+        ->values();
 
     // Determine which top-level nav category is "active" for the current page
     $activeNavCategoryId = null;
@@ -66,7 +75,7 @@
     <header class="border-b border-border bg-white">
         <div class="mx-auto flex h-[78px] max-w-[1180px] items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="{{ $siteName }} Home">
-                <img src="{{ asset('images/COSMEX_LOGO.png') }}" alt="{{ $siteName }} Logo" class="h-[60px] w-auto object-contain">
+                <img src="{{ asset('images/COSMEX_LOGO.png') }}" alt="{{ $siteName }} Logo" width="240" height="60" class="h-[60px] w-auto object-contain">
             </a>
 
             <nav class="hidden items-center gap-1 lg:flex">
@@ -80,12 +89,10 @@
                         $promoLabel = strtoupper(explode(' ', $navCategory->name)[0]);
                         // Dynamic promo image: check for known images, fall back to a default
                         $knownImages = [
-                            'Laser Machines'     => 'Laser Machines.png',
-                            'HydraFacial'        => 'HydraFacial.png',
-                            'Aesthetic Products' => 'Aesthetic Equipment.png',
-                            'Other Equipment'    => 'Aesthetic Equipment.png',
+                            'laser-machines' => 'menu-laser-machines-320.webp',
+                            'hydrafacial'    => 'menu-hydrafacial-320.webp',
                         ];
-                        $promoImage = $knownImages[$navCategory->name] ?? 'Aesthetic Equipment.png';
+                        $promoImage = $knownImages[$navCategory->slug] ?? 'menu-aesthetic-equipment-320.webp';
                         $isNavActive = $activeNavCategoryId === $navCategory->id;
                     @endphp
                     <div class="group relative">
@@ -123,7 +130,7 @@
                                             </div>
                                         </div>
                                         <div class="relative mt-4 flex justify-center items-end h-[160px]">
-                                            <img src="{{ asset('images/' . $promoImage) }}" alt="{{ $navCategory->name }}" class="max-h-[150px] w-auto object-cover rounded-2xl overflow-hidden shadow-md transition-transform duration-500 group-hover:scale-105">
+                                            <img src="{{ asset('images/' . $promoImage) }}" alt="" width="150" height="150" loading="lazy" decoding="async" class="max-h-[150px] w-auto object-cover rounded-2xl overflow-hidden shadow-md transition-transform duration-500 group-hover:scale-105">
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +164,7 @@
     <div class="mb-3 flex items-center justify-between">
         <div>
             <p class="text-[11px] font-bold uppercase text-accent">Product Menu</p>
-            <h2 class="font-heading text-lg font-bold text-text-primary">Browse Categories</h2>
+            <p class="font-heading text-lg font-bold text-text-primary">Browse Categories</p>
         </div>
         <button type="button" data-mobile-categories-close class="flex h-11 w-11 items-center justify-center rounded-2xl bg-bg-light text-text-secondary" aria-label="Close categories">
             <i class="fa-solid fa-xmark"></i>
@@ -183,7 +190,7 @@
         <div class="mb-4 flex items-center justify-between">
             <div>
                 <p class="text-[11px] font-bold uppercase text-accent">Find Products</p>
-                <h2 class="font-heading text-xl font-semibold text-text-primary">Search The Cosmex</h2>
+                <p class="font-heading text-xl font-semibold text-text-primary">Search The Cosmex</p>
             </div>
             <button type="button" data-search-close aria-label="Close search" class="flex h-12 w-12 items-center justify-center rounded-2xl bg-bg-light text-text-secondary transition active:scale-95 hover:text-text-primary">
                 <i class="fa-solid fa-xmark"></i>
@@ -192,13 +199,13 @@
 
         <form action="{{ route('search') }}" method="GET" class="flex min-h-12 items-center gap-3 rounded-2xl bg-bg-light px-4 ring-1 ring-border/80 transition focus-within:ring-primary/40">
             <i class="fa-solid fa-magnifying-glass text-sm text-primary"></i>
-            <input id="global-search-input" type="search" name="q" value="{{ request('q') }}" placeholder="Search products and machines" class="h-12 flex-1 border-0 bg-transparent text-base text-text-primary outline-none placeholder:text-text-secondary">
+            <input id="global-search-input" type="search" name="q" value="{{ is_string(request('q')) ? request('q') : '' }}" aria-label="Search products" placeholder="Search products and machines" class="h-12 flex-1 border-0 bg-transparent text-base text-text-primary outline-none placeholder:text-text-secondary">
         </form>
 
         <div class="mt-4 flex gap-2 overflow-x-auto hide-scrollbar">
-            @foreach(['Aesthetic Machines', 'Fillers', 'Exosomes', 'HydraFacial', 'Laser', 'Skincare'] as $term)
-                <a href="{{ route('search', ['q' => $term]) }}" class="shrink-0 rounded-full bg-bg-light px-4 py-2 text-sm font-semibold text-text-secondary transition hover:bg-primary hover:text-white">
-                    {{ $term }}
+            @foreach($quickCategories as $quickCategory)
+                <a href="{{ route('category.show', $quickCategory->slug) }}" class="shrink-0 rounded-full bg-bg-light px-4 py-2 text-sm font-semibold text-text-secondary transition hover:bg-primary hover:text-white">
+                    {{ $quickCategory->name }}
                 </a>
             @endforeach
         </div>

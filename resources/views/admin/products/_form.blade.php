@@ -31,6 +31,12 @@
                 </div>
 
                 <div class="md:col-span-2">
+                    <label for="brand" class="mb-2 block text-sm font-medium text-zinc-700">Brand / manufacturer <span class="text-zinc-400 font-normal">(optional)</span></label>
+                    <input id="brand" name="brand" type="text" maxlength="100" value="{{ old('brand', data_get($product, 'brand')) }}" placeholder="e.g. Candela, Dermaheal, Hugel" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10">
+                    <p class="mt-1.5 text-xs text-zinc-400">The company that makes the product (from the packaging or supplier documents), not Cosmex. Used by Google for product results; leave blank if unsure.</p>
+                </div>
+
+                <div class="md:col-span-2">
                     <label for="slug" class="mb-2 block text-sm font-medium text-zinc-700">Slug</label>
                     <input id="slug" name="slug" type="text" value="{{ $slugValue }}" data-slug-target class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10">
                     <p class="mt-2 text-sm text-zinc-500">Preview: <span data-slug-preview>{{ $productUrlPreview }}</span></p>

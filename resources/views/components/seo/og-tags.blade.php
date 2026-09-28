@@ -11,7 +11,7 @@
 <meta property="og:image" content="{{ $image }}">
 <meta property="og:url" content="{{ $url }}">
 <meta property="og:type" content="{{ $type }}">
-<meta property="og:site_name" content="Cosmex Pvt Ltd">
+<meta property="og:site_name" content="{{ config('site.name') }}">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $title }}">

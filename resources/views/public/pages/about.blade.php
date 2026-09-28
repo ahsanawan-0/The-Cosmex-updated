@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'About Cosmex Pvt Ltd | Professional Aesthetic Products Pakistan')
-@section('meta_description', "Learn about Cosmex Pvt Ltd, Pakistan's trusted supplier for professional aesthetic machines, clinic products, and beauty equipment.")
+@section('title', 'About Us: Aesthetic Equipment Importer in Lahore')
+@section('meta_description', "Cosmex Pvt Ltd imports aesthetic machines and clinic products for dermatologists and aesthetic clinics across Pakistan, from Johar Town, Lahore.")
 @section('canonical', url('/about'))
 
 @section('content')
@@ -22,6 +22,7 @@
                 <h2 class="mt-3 font-heading text-3xl font-bold text-text-primary">Built for aesthetic professionals</h2>
                 <p class="mt-5 text-base leading-8 text-text-secondary">Cosmex Pvt Ltd was founded with a single mission: to make reliable aesthetic machines and clinic-grade products accessible to professionals across Pakistan.</p>
                 <p class="mt-4 text-base leading-8 text-text-secondary">We source directly from trusted distributors and authorized suppliers, ensuring every product you receive is genuine, sealed, and ready for professional use.</p>
+                <p class="mt-4 text-base leading-8 text-text-secondary">Our range covers <a href="{{ route('category.show', 'aesthetic-machines') }}" class="font-semibold text-primary hover:underline">aesthetic machines</a> such as diode lasers, HydraFacial and HIFU systems, and <a href="{{ route('category.show', 'aesthetic-products') }}" class="font-semibold text-primary hover:underline">clinic products</a> including exosomes, PDRN and numbing creams. Orders are confirmed on WhatsApp and delivered across Pakistan, with same or next-day delivery in Lahore. You are welcome to <a href="{{ route('contact') }}" class="font-semibold text-primary hover:underline">visit or contact our Johar Town office</a>.</p>
             </div>
             <div class="flex min-h-[280px] items-center justify-center rounded-2xl bg-white p-10 shadow-card">
                 <div class="text-center">
@@ -35,9 +36,9 @@
     <section class="bg-bg-light px-4 pb-12 sm:px-6 lg:px-8">
         <div class="mx-auto grid max-w-[1180px] grid-cols-2 gap-3 lg:grid-cols-4">
             @foreach([
-                ['num' => '1000+', 'label' => 'Products'],
-                ['num' => '4', 'label' => 'Core Categories'],
-                ['num' => '100%', 'label' => 'Authentic'],
+                ['num' => $stats['products'], 'label' => 'Products in the Catalogue'],
+                ['num' => $stats['categories'], 'label' => 'Product Categories'],
+                ['num' => 'Lahore', 'label' => 'Johar Town Office'],
                 ['num' => 'PK', 'label' => 'Nationwide Delivery'],
             ] as $stat)
                 <div class="rounded-2xl bg-white p-5 text-center shadow-card">

@@ -1,15 +1,15 @@
-@props(['product'])
+@props(['product', 'eager' => false])
 
 <article class="product-card group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 hover:-translate-y-1">
     {{-- Image Container --}}
     <div class="relative overflow-hidden bg-bg-light" style="aspect-ratio: 1 / 1;">
         <a href="{{ route('products.show', $product->slug) }}" class="block w-full h-full" aria-label="{{ $product->name }}">
             <img
-                src="{{ $product->main_image_url }}"
+                src="{{ $product->thumb_url }}"
                 alt="{{ $product->name }}"
                 width="500"
                 height="500"
-                loading="lazy"
+                loading="{{ $eager ? 'eager' : 'lazy' }}"
                 class="h-full w-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
             >
         </a>
@@ -24,7 +24,7 @@
         {{-- View Detail Overlay --}}
         <div class="absolute inset-x-0 bottom-0 z-20 p-3 opacity-0 transition-all duration-300 group-hover:opacity-100">
             <a href="{{ route('products.show', $product->slug) }}" class="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary text-sm font-bold text-white shadow-md transition active:scale-95">
-                <i class="fa-solid fa-eye text-sm"></i>
+                <i class="fa-solid fa-eye text-sm" aria-hidden="true"></i>
                 View Details
             </a>
         </div>
@@ -62,7 +62,7 @@
             @endif
             </div>
             <a href="{{ route('products.show', $product->slug) }}" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-bg-light text-primary transition group-hover:bg-primary group-hover:text-white" aria-label="View {{ $product->name }}">
-                <i class="fa-solid fa-arrow-right text-xs"></i>
+                <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
             </a>
         </div>
     </div>

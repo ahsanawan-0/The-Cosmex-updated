@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Terms & Conditions | Cosmex Pvt Ltd')
+@section('title', 'Terms & Conditions')
 @section('meta_description', 'Read the Cosmex Pvt Ltd terms and conditions. Learn about our ordering process, pricing, delivery, and return policies.')
 @section('canonical', url('/terms-conditions'))
 

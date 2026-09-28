@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Privacy Policy | Cosmex Pvt Ltd')
+@section('title', 'Privacy Policy')
 @section('meta_description', 'Read the Cosmex Pvt Ltd privacy policy. Learn how we collect, use, and protect your personal information.')
 @section('canonical', url('/privacy-policy'))
 

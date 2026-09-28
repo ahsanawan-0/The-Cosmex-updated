@@ -42,7 +42,8 @@
                     @php
                         $dbCat = $dbCategories->get($cat['slug']);
                     @endphp
-                    @continue(! $dbCat)
+                    {{-- Skip categories that are missing or have no active products --}}
+                    @continue(! $dbCat || ! $dbCat->hasActiveProducts())
                     @php
                         $imageUrl = $dbCat->image_url;
                         $linkUrl = route('category.show', $dbCat->slug);
@@ -52,23 +53,24 @@
                         <div class="relative aspect-square overflow-hidden rounded-full bg-zinc-100 ring-1 ring-zinc-200/70 shadow-sm transition-all duration-300 group-hover:ring-2 group-hover:ring-primary/40 group-hover:shadow-lg group-hover:shadow-primary/10">
                             <img
                                 src="{{ $imageUrl }}"
-                                alt="{{ $cat['name'] }}"
+                                alt=""
+                                width="180" height="180"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                loading="lazy"
+                                loading="lazy" decoding="async"
                             >
                         </div>
 
-                        <p class="mt-4 px-1 text-[13px] font-semibold leading-snug text-zinc-800 transition-colors group-hover:text-primary">{{ $cat['name'] }}</p>
+                        <p class="mt-4 px-1 text-[13px] font-semibold leading-snug text-zinc-800 transition-colors group-hover:text-primary">{{ $dbCat->name }}</p>
                     </a>
                 @endforeach
             </div>
 
             {{-- Prev/Next Arrows (desktop) --}}
-            <button onclick="document.getElementById('aesth-slider').scrollBy({left:-196,behavior:'smooth'})"
+            <button type="button" aria-label="Scroll categories left" onclick="document.getElementById('aesth-slider').scrollBy({left:-196,behavior:'smooth'})"
                     class="hidden lg:flex absolute -left-5 top-[38%] -translate-y-1/2 h-10 w-10 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-md text-zinc-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 z-10">
                 <i class="fa-solid fa-chevron-left text-xs"></i>
             </button>
-            <button onclick="document.getElementById('aesth-slider').scrollBy({left:196,behavior:'smooth'})"
+            <button type="button" aria-label="Scroll categories right" onclick="document.getElementById('aesth-slider').scrollBy({left:196,behavior:'smooth'})"
                     class="hidden lg:flex absolute -right-5 top-[38%] -translate-y-1/2 h-10 w-10 items-center justify-center rounded-full bg-white border border-zinc-200 shadow-md text-zinc-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 z-10">
                 <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>

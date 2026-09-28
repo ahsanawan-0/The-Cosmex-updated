@@ -27,7 +27,7 @@
                             Wholesale supplier since 2017
                         </div>
                         <h1 class="font-heading text-[2.45rem] font-bold leading-[1.04] tracking-normal text-text-primary sm:text-5xl lg:text-6xl">
-                            <span class="text-primary">Advanced Aesthetic</span> Machines for Modern Clinics
+                            <span class="text-primary">Advanced Aesthetic</span> Machines for Clinics in Pakistan
                         </h1>
                         <p class="mt-5 max-w-xl text-base leading-7 text-text-secondary">
                             The Cosmex is a trusted direct importer and supplier of advanced aesthetic machines — empowering clinics and spas with cutting-edge technology.
@@ -50,7 +50,11 @@
 
                     <div class="order-1 lg:order-2">
                         <div class="relative mx-auto aspect-[4/3] max-h-[430px] lg:aspect-square lg:max-h-[560px]">
-                            <img src="{{ asset('images/COSMEX-AESTHETIC-IMPORTER.png') }}" alt="Cosmex aesthetic machines"
+                            <img src="{{ asset('images/hero-aesthetic-machines-1100.webp') }}"
+                                srcset="{{ asset('images/hero-aesthetic-machines-640.webp') }} 640w, {{ asset('images/hero-aesthetic-machines-1100.webp') }} 1100w"
+                                sizes="(min-width: 1024px) 560px, 100vw"
+                                width="1100" height="611"
+                                alt="HydraFacial, diode laser and HIFU machines supplied by The Cosmex"
                                 class="absolute inset-0 h-full w-full object-contain object-center"
                                 loading="eager" fetchpriority="high">
                         </div>
@@ -69,11 +73,11 @@
                             <span class="h-2.5 w-2.5 rounded-full bg-success"></span>
                             Professional Skincare Range
                         </div>
-                        <h1 class="font-heading text-[2.45rem] font-bold leading-[1.04] tracking-normal text-text-primary sm:text-5xl lg:text-6xl">
+                        <h2 class="font-heading text-[2.45rem] font-bold leading-[1.04] tracking-normal text-text-primary sm:text-5xl lg:text-6xl">
                             <span class="text-primary">Premium Aesthetic</span> Products for Skin &amp; Beauty
-                        </h1>
+                        </h2>
                         <p class="mt-5 max-w-xl text-base leading-7 text-text-secondary">
-                            Discover our curated range of professional aesthetic products — serums, peels, and skincare solutions trusted by leading salons and clinics across Pakistan.
+                            Exosomes, PDRN and mesotherapy solutions, botulinum toxin and numbing creams, supplied to clinics and licensed practitioners across Pakistan.
                         </p>
                         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
                             <a href="{{ $whatsAppLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto">
@@ -85,8 +89,8 @@
                             </a>
                         </div>
                         <div class="mt-8 grid grid-cols-3 gap-3 text-xs font-semibold text-text-primary">
-                            <div class="flex items-center gap-2"><i class="fa-solid fa-flask text-xl text-primary"></i><span>Clinically Tested Formulas</span></div>
-                            <div class="flex items-center gap-2"><i class="fa-solid fa-leaf text-xl text-primary"></i><span>Safe &amp; Dermatologist Approved</span></div>
+                            <div class="flex items-center gap-2"><i class="fa-solid fa-user-doctor text-xl text-primary"></i><span>For Licensed Professionals</span></div>
+                            <div class="flex items-center gap-2"><i class="fa-solid fa-box-open text-xl text-primary"></i><span>Genuine, Sealed Stock</span></div>
                             <div class="flex items-center gap-2"><i class="fa-solid fa-truck-fast text-xl text-primary"></i><span>Nationwide Delivery</span></div>
                         </div>
                     </div>
@@ -94,9 +98,13 @@
                     {{-- Image placeholder – drop your file in public/images/ and update the src --}}
                     <div class="order-1 lg:order-2">
                         <div class="relative mx-auto aspect-[4/3] max-h-[430px] lg:aspect-square lg:max-h-[560px]">
-                            <img src="{{ asset('images/aesthetic_products_hero.png') }}" alt="Cosmex aesthetic products"
+                            <img src="{{ asset('images/hero-aesthetic-products-1100.webp') }}"
+                                srcset="{{ asset('images/hero-aesthetic-products-600.webp') }} 600w, {{ asset('images/hero-aesthetic-products-1100.webp') }} 1100w"
+                                sizes="(min-width: 1024px) 560px, 100vw"
+                                width="1100" height="1100"
+                                alt="Exosome, PDRN and skin booster products for clinics"
                                 class="absolute inset-0 h-full w-full object-contain object-center"
-                                loading="lazy">
+                                loading="lazy" decoding="async">
                         </div>
                     </div>
 

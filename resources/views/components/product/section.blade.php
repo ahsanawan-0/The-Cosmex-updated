@@ -11,7 +11,7 @@
                     <p class="mt-2 text-sm text-text-secondary">{{ $subtitle }}</p>
                 @endif
             </div>
-            <a href="{{ route('products.index', ['category' => $categorySlug]) }}"
+            <a href="{{ route('category.show', $categorySlug) }}"
                class="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-4 text-sm font-semibold text-primary shadow-sm transition active:scale-95">
                 {{ $categoryLabel }}
                 <i class="fa-solid fa-arrow-right text-xs"></i>

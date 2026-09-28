@@ -13,8 +13,10 @@
                 class="group relative flex flex-col sm:flex-row-reverse overflow-hidden rounded-2xl bg-white shadow-card transition duration-300 hover:shadow-hover">
                 {{-- Image Container (First in DOM, goes on top on mobile, right on desktop) --}}
                 <div class="relative h-48 sm:h-auto sm:min-h-[230px] sm:flex-1 overflow-hidden">
-                    <img src="{{ asset('images/aesthetic_products_promo.png') }}" alt="Aesthetic Products"
-                        class="h-full w-full object-cover sm:absolute sm:inset-0 transition-transform duration-700 group-hover:scale-105">
+                    <img src="{{ asset('images/promo-aesthetic-products-1000.webp') }}"
+                        srcset="{{ asset('images/promo-aesthetic-products-600.webp') }} 600w, {{ asset('images/promo-aesthetic-products-1000.webp') }} 1000w"
+                        sizes="(min-width: 640px) 50vw, 100vw" width="1000" height="458" loading="lazy" decoding="async"
+                        alt="Aesthetic Products" class="h-full w-full object-cover sm:absolute sm:inset-0 transition-transform duration-700 group-hover:scale-105">
                 </div>
                 {{-- Text Container --}}
                 <div class="z-10 flex flex-col items-start justify-center p-6 lg:p-8 sm:flex-1">
@@ -33,14 +35,16 @@
                 class="group relative flex flex-col sm:flex-row-reverse overflow-hidden rounded-2xl bg-white shadow-card transition duration-300 hover:shadow-hover">
                 {{-- Image Container (First in DOM, goes on top on mobile, right on desktop) --}}
                 <div class="relative h-48 sm:h-auto sm:min-h-[230px] sm:flex-1 overflow-hidden">
-                    <img src="{{ asset('images/aesthetic_machines_promo.png') }}" alt="Aesthetic Machines"
-                        class="h-full w-full object-cover sm:absolute sm:inset-0 transition-transform duration-700 group-hover:scale-105">
+                    <img src="{{ asset('images/promo-aesthetic-machines-1000.webp') }}"
+                        srcset="{{ asset('images/promo-aesthetic-machines-600.webp') }} 600w, {{ asset('images/promo-aesthetic-machines-1000.webp') }} 1000w"
+                        sizes="(min-width: 640px) 50vw, 100vw" width="1000" height="458" loading="lazy" decoding="async"
+                        alt="Aesthetic Machines" class="h-full w-full object-cover sm:absolute sm:inset-0 transition-transform duration-700 group-hover:scale-105">
                 </div>
                 {{-- Text Container --}}
                 <div class="z-10 flex flex-col items-start justify-center p-6 lg:p-8 sm:flex-1">
                     <h3 class="mb-3 font-heading text-2xl font-bold text-text-primary">Aesthetic Machines</h3>
                     <p class="mb-7 max-w-[250px] text-sm leading-relaxed text-text-secondary">Advanced technology machines for every aesthetic need.</p>
-                    <a href="{{ route('category.show', 'laser-machines') }}"
+                    <a href="{{ route('category.show', 'aesthetic-machines') }}"
                         class="inline-flex min-h-12 w-full justify-center sm:w-auto items-center gap-3 rounded-2xl bg-primary px-5 text-sm font-semibold text-white transition active:scale-95">
                         Explore Machines
                         <i class="fa-solid fa-arrow-right"></i>

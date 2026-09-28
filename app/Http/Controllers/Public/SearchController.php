@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -11,7 +12,9 @@ class SearchController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = strip_tags(mb_substr(trim((string) $request->string('q')), 0, 100));
+        abort_if(is_array($request->query('q')) || is_array($request->query('page')), 404);
+
+        $query = strip_tags(mb_substr(trim((string) $request->query('q', '')), 0, 100));
 
         $products = collect();
 
@@ -31,6 +34,14 @@ class SearchController extends Controller
                 ->withQueryString();
         }
 
-        return view('public.search.results', compact('products', 'query'));
+        // Suggestions for empty results: real categories, not search URLs.
+        $suggestions = Category::where('status', 'active')
+            ->withActiveProducts()
+            ->whereNotNull('parent_id')
+            ->orderBy('sort_order')
+            ->take(8)
+            ->get(['name', 'slug']);
+
+        return view('public.search.results', compact('products', 'query', 'suggestions'));
     }
 }

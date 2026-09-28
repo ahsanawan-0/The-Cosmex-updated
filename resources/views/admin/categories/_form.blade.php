@@ -30,6 +30,23 @@
         <div class="md:col-span-2">
             <label for="description" class="mb-2 block text-sm font-medium text-zinc-700">Description</label>
             <textarea id="description" name="description" rows="5" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10">{{ old('description', data_get($category, 'description')) }}</textarea>
+            <p class="mt-1.5 text-xs text-zinc-400">Short introduction shown under the category heading (1–2 sentences).</p>
+        </div>
+
+        <div class="md:col-span-2 rounded-2xl border border-zinc-200 bg-zinc-50 p-5 space-y-5">
+            <p class="text-sm font-semibold text-zinc-800">Search engine settings <span class="font-normal text-zinc-500">(leave blank to use the built-in defaults)</span></p>
+            <div>
+                <label for="seo_title" class="mb-2 block text-sm font-medium text-zinc-700">SEO title <span class="text-zinc-400 font-normal">(max 70; the site name is added automatically when it fits)</span></label>
+                <input id="seo_title" name="seo_title" type="text" maxlength="70" value="{{ old('seo_title', data_get($category, 'seo_title')) }}" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10">
+            </div>
+            <div>
+                <label for="seo_description" class="mb-2 block text-sm font-medium text-zinc-700">Meta description <span class="text-zinc-400 font-normal">(140–160 characters, end with a full sentence)</span></label>
+                <textarea id="seo_description" name="seo_description" rows="3" maxlength="170" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10">{{ old('seo_description', data_get($category, 'seo_description')) }}</textarea>
+            </div>
+            <div>
+                <label for="content" class="mb-2 block text-sm font-medium text-zinc-700">Buying guide <span class="text-zinc-400 font-normal">(HTML shown below the products; use &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;)</span></label>
+                <textarea id="content" name="content" rows="10" class="block w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 font-mono text-sm">{{ old('content', data_get($category, 'content')) }}</textarea>
+            </div>
         </div>
 
         <div>

@@ -346,6 +346,7 @@ class ProductController extends Controller
             'id'                => $product->id,
             'name'              => $product->name,
             'subtitle'          => $product->subtitle,
+            'brand'             => $product->brand,
             'slug'              => $product->slug,
             'category_id'       => $product->category_id,
             'stock'             => (int) $product->stock,

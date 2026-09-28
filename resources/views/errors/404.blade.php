@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', '404 - Page Not Found | Cosmex Pvt Ltd')
+@section('title', 'Page Not Found')
+@section('robots', 'noindex, follow')
 @section('content')
     <div class="flex min-h-[70vh] flex-col items-center justify-center bg-bg-light px-4 py-24 text-center">
         <p class="font-heading text-[10rem] leading-none text-primary opacity-20 select-none">404</p>

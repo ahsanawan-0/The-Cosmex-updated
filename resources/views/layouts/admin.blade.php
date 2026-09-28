@@ -47,6 +47,10 @@
                     <svg class="{{ $iconClasses(request()->routeIs('admin.products.import*')) }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 16.5V6.75m0 0-3.75 3.75M12 6.75l3.75 3.75M3.75 15v2.25A2.25 2.25 0 0 0 6 19.5h12a2.25 2.25 0 0 0 2.25-2.25V15" /></svg>
                     <span>Import CSV</span>
                 </a>
+                <a href="{{ route('admin.messages.index') }}" class="{{ $navLinkClasses(request()->routeIs('admin.messages.*')) }}">
+                    <svg class="{{ $iconClasses(request()->routeIs('admin.messages.*')) }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                    <span>Messages</span>
+                </a>
 
                 <div class="my-5 border-t border-zinc-100"></div>
 

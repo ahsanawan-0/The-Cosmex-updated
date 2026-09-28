@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Cosmex Pvt Ltd | Get in Touch')
-@section('meta_description', 'Contact Cosmex Pvt Ltd for product inquiries, orders, or support. Reach us via WhatsApp, phone, or our contact form.')
+@section('title', 'Contact Us: Johar Town, Lahore | WhatsApp & Phone')
+@section('meta_description', 'Contact Cosmex Pvt Ltd in Johar Town, Lahore for prices, orders and support on aesthetic machines and clinic products. WhatsApp, phone, email or contact form.')
 @section('canonical', url('/contact'))
 
 @section('content')
@@ -40,6 +40,11 @@
 
                     <form action="{{ route('contact.submit') }}" method="POST" class="mt-6 space-y-5">
                         @csrf
+                        {{-- Spam trap: hidden from people, filled in by bots --}}
+                        <div class="hidden" aria-hidden="true">
+                            <label for="website">Website</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
                         <div class="grid gap-4 sm:grid-cols-2">
                             <div>
                                 <label for="name" class="block text-sm font-medium text-zinc-700">Full Name <span class="text-red-500">*</span></label>
@@ -128,7 +133,7 @@
 
                     {{-- Google Maps Embed --}}
                     <div class="overflow-hidden rounded-2xl border border-zinc-200 shadow-sm">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.777440478038!2d74.2813784!3d31.4753079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919034243dd4567%3A0xadb556dc6c5e25b1!2sThe%20Cosmex%20(pvt.)%20Ltd!5e0!3m2!1sen!2s!4v1779120339583!5m2!1sen!2s" width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe title="Map: The Cosmex, Johar Town, Lahore" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.777440478038!2d74.2813784!3d31.4753079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919034243dd4567%3A0xadb556dc6c5e25b1!2sThe%20Cosmex%20(pvt.)%20Ltd!5e0!3m2!1sen!2s!4v1779120339583!5m2!1sen!2s" width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>

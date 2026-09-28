@@ -4,13 +4,21 @@
 /** @var \Illuminate\Support\Collection $categories */
 /** @var array $pages */
 @endphp
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     @foreach($pages as $page)
     <url>
         <loc>{{ $page['loc'] }}</loc>
         <lastmod>{{ $page['lastmod'] }}</lastmod>
-        <changefreq>{{ $page['changefreq'] }}</changefreq>
-        <priority>{{ $page['priority'] }}</priority>
+        @foreach ($page['videos'] ?? [] as $video)
+        <video:video>
+            <video:thumbnail_loc>{{ asset('images/videos/' . $video['file'] . '.webp') }}</video:thumbnail_loc>
+            <video:title>{{ $video['title'] }}</video:title>
+            <video:description>{{ $video['description'] }}</video:description>
+            <video:content_loc>{{ asset('videos/' . $video['file'] . '.mp4') }}</video:content_loc>
+            <video:duration>{{ $video['duration'] }}</video:duration>
+            <video:publication_date>{{ $video['uploaded'] }}</video:publication_date>
+        </video:video>
+        @endforeach
     </url>
     @endforeach
 
@@ -18,8 +26,6 @@
     <url>
         <loc>{{ url('/category/' . $category->slug) }}</loc>
         <lastmod>{{ $category->updated_at->toDateString() }}</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
     </url>
     @endforeach
 
@@ -27,8 +33,11 @@
     <url>
         <loc>{{ url('/products/' . $product->slug) }}</loc>
         <lastmod>{{ $product->updated_at->toDateString() }}</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
+        @if ($product->main_image)
+        <image:image>
+            <image:loc>{{ $product->main_image_url }}</image:loc>
+        </image:image>
+        @endif
     </url>
     @endforeach
 </urlset>

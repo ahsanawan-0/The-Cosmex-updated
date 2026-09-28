@@ -1,57 +1,20 @@
 @extends('layouts.app')
 
 @php
-    $seoTitle = $product->seo_title ?: $product->name . ' - Wholesale Supplier Pakistan | Cosmex Pvt Ltd';
-    $seoDesc = $product->seo_description ?: 'Buy ' . $product->name . ' wholesale in Pakistan. Best price PKR ' . number_format($product->price) . '. Authentic clinic quality product. Inquire via WhatsApp.';
-    $canonical = url('/products/' . $product->slug);
     $whatsappNum = preg_replace('/\D+/', '', \App\Models\Setting::get('whatsapp_number'));
-    $waMsg = rawurlencode('Hi, I want a wholesale inquiry for: ' . $product->name . "\nPrice: PKR " . number_format($product->sale_price ?? $product->price) . "\nLink: " . $canonical);
+    $waMsg = rawurlencode('Hi, I want a wholesale inquiry for: ' . $product->name . "\nPrice: PKR " . number_format($product->display_price) . "\nLink: " . $canonical);
     $waLink = 'https://wa.me/' . $whatsappNum . '?text=' . $waMsg;
     $phone = \App\Models\Setting::get('contact_phone');
-
-    $allImages = [$product->main_image_url];
-    if (!empty($product->gallery_images)) {
-        foreach ($product->gallery_images as $gi) {
-            $allImages[] = asset('storage/' . $gi);
-        }
-    }
 @endphp
 
-@section('title', $seoTitle)
-@section('meta_description', $seoDesc)
+@section('title', $seo['title'])
+@section('meta_description', $seo['description'])
 @section('canonical', $canonical)
 @section('og_image', $product->main_image_url)
 @section('og_type', 'product')
 
 @section('schema')
-    [
-    {
-    "@@context": "https://schema.org",
-    "@@type": "Product",
-    "name": "{{ $product->name }}",
-    "description": "{{ strip_tags($product->short_description ?? '') }}",
-    "image": ["{{ $product->main_image_url }}"],
-    "brand": { "@type": "Brand", "name": "Cosmex Pvt Ltd" },
-    "offers": {
-    "@@type": "Offer",
-    "priceCurrency": "PKR",
-    "price": "{{ $product->sale_price ?? $product->price }}",
-    "availability": "{{ $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}",
-    "url": "{{ $canonical }}",
-    "seller": { "@type": "Organization", "name": "Cosmex Pvt Ltd" }
-    },
-    "category": "{{ $product->category->name ?? '' }}"
-    },
-    {
-    "@@context": "https://schema.org",
-    "@@type": "BreadcrumbList",
-    "itemListElement": [
-    {"@@type":"ListItem","position":1,"name":"Home","item":"{{ url('/') }}"},
-    {"@@type":"ListItem","position":2,"name":"{{ $product->category->name ?? 'Products' }}","item":"{{ $product->category ? url('/category/' . $product->category->slug) : url('/products') }}"},
-    {"@@type":"ListItem","position":3,"name":"{{ $product->name }}","item":"{{ $canonical }}"}
-    ]
-    }
-    ]
+{!! \App\Helpers\SeoHelper::json($schema) !!}
 @endsection
 
 @push('styles')
@@ -198,9 +161,9 @@
                             @foreach($allImages as $idx => $imgUrl)
                                 <button onclick="pdpSetImage({{ $idx }})"
                                     class="pdp-thumb shrink-0 h-16 w-16 overflow-hidden bg-white shadow-sm sm:h-[68px] sm:w-[68px] {{ $idx === 0 ? 'active' : '' }}"
-                                    data-thumb-idx="{{ $idx }}">
-                                    <img src="{{ $imgUrl }}" alt="View {{ $idx + 1 }}" class="w-full h-full object-cover"
-                                        loading="lazy">
+                                    data-thumb-idx="{{ $idx }}" aria-label="Show image {{ $idx + 1 }} of {{ count($allImages) }}">
+                                    <img src="{{ $imgUrl }}" alt="{{ $product->name }} – view {{ $idx + 1 }}" class="w-full h-full object-cover"
+                                        width="68" height="68" loading="lazy">
                                 </button>
                             @endforeach
                         </div>
@@ -211,7 +174,7 @@
                         <div class="pdp-zoom-wrap aspect-square cursor-pointer rounded-[28px] bg-bg-light shadow-card"
                             onclick="pdpOpenLightbox()" onmousemove="pdpZoomMove(event)" onmouseleave="pdpZoomReset()">
                             <img id="pdp-main-img" src="{{ $allImages[0] }}" alt="{{ $product->name }}"
-                                class="h-full w-full object-contain p-5" loading="eager" fetchpriority="high">
+                                class="h-full w-full object-contain p-5" width="600" height="600" loading="eager" fetchpriority="high">
                         </div>
                         <button onclick="pdpOpenLightbox()"
                             class="mt-3 flex items-center gap-1.5 text-xs font-semibold text-text-secondary transition hover:text-primary">
@@ -363,6 +326,24 @@
                 @else
                     <p class="text-zinc-400">No description available for this product yet.</p>
                 @endif
+
+                <h2 class="!mt-10 !mb-4 font-heading text-xl font-bold text-text-primary">{{ $product->name }}: product details</h2>
+                <table class="!mt-0 w-full text-sm">
+                    <tbody>
+                        @if ($product->category)
+                            <tr><th class="w-40 text-left font-semibold text-text-primary">Category</th><td><a href="{{ route('category.show', $product->category->slug) }}">{{ $product->category->name }}</a></td></tr>
+                        @endif
+                        @if ($product->brand)
+                            <tr><th class="text-left font-semibold text-text-primary">Brand</th><td>{{ $product->brand }}</td></tr>
+                        @endif
+                        <tr><th class="text-left font-semibold text-text-primary">Price</th><td>PKR {{ number_format($product->display_price) }}</td></tr>
+                        <tr><th class="text-left font-semibold text-text-primary">Availability</th><td>{{ $product->stock > 0 ? 'In stock' : 'Out of stock – ask on WhatsApp for the next shipment' }}</td></tr>
+                        <tr><th class="text-left font-semibold text-text-primary">Delivery</th><td>3–7 business days across Pakistan; same or next day in Lahore</td></tr>
+                        <tr><th class="text-left font-semibold text-text-primary">Payment</th><td>Cash on delivery available nationwide</td></tr>
+                        <tr><th class="text-left font-semibold text-text-primary">Returns</th><td>Damaged, defective or incorrect items reported within 3 days are replaced or refunded</td></tr>
+                        <tr><th class="text-left font-semibold text-text-primary">Supplied to</th><td>Clinics, dermatologists and aesthetic professionals</td></tr>
+                    </tbody>
+                </table>
             </div>
 
             <div id="pdp-panel-delivery" class="pdp-panel hidden pt-8">
@@ -522,7 +503,8 @@
         <section class="bg-bg-light py-14 lg:py-20">
             <div class="mx-auto max-w-[1180px] px-4 sm:px-6 lg:px-8">
                 <p class="text-center text-[11px] font-bold uppercase text-accent">Related Products</p>
-                <h2 class="mt-2 text-center font-heading text-2xl font-bold text-text-primary sm:text-3xl">You May Also Like
+                <h2 class="mt-2 text-center font-heading text-2xl font-bold text-text-primary sm:text-3xl">
+                    More {{ $product->category->name ?? 'Products' }}
                 </h2>
                 <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
                     @foreach($relatedProducts as $related)
@@ -537,9 +519,9 @@
     <div id="pdp-lightbox" class="pdp-lightbox" onclick="if(event.target===this)pdpCloseLightbox()">
         <button class="pdp-lb-close" onclick="pdpCloseLightbox()" aria-label="Close"><i
                 class="fa-solid fa-xmark"></i></button>
-        <button class="pdp-lb-btn" style="left:16px" onclick="pdpLbPrev()"><i class="fa-solid fa-chevron-left"></i></button>
-        <img id="pdp-lb-img" src="" alt="Product image">
-        <button class="pdp-lb-btn" style="right:16px" onclick="pdpLbNext()"><i
+        <button class="pdp-lb-btn" style="left:16px" onclick="pdpLbPrev()" aria-label="Previous image"><i class="fa-solid fa-chevron-left"></i></button>
+        <img id="pdp-lb-img" alt="{{ $product->name }} – enlarged view">
+        <button class="pdp-lb-btn" style="right:16px" onclick="pdpLbNext()" aria-label="Next image"><i
                 class="fa-solid fa-chevron-right"></i></button>
         <div class="absolute bottom-5 left-1/2 -translate-x-1/2">
             <span id="pdp-lb-counter" class="pdp-counter"></span>

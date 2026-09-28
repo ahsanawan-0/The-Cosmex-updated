@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', '500 - Server Error | Cosmex Pvt Ltd')
+@section('title', 'Server Error')
+@section('robots', 'noindex, nofollow')
 @section('content')
     <div class="flex min-h-[70vh] flex-col items-center justify-center bg-bg-light px-4 py-24 text-center">
         <p class="font-heading text-[10rem] leading-none text-red-200 select-none">500</p>

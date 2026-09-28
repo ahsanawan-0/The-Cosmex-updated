@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class Product extends Model
 {
     protected $fillable = [
-        'category_id', 'name', 'subtitle', 'slug', 'price', 'sale_price', 'stock',
+        'category_id', 'name', 'subtitle', 'slug', 'brand', 'price', 'sale_price', 'stock',
         'short_description', 'description', 'main_image', 'gallery_images',
         'status', 'seo_title', 'seo_description'
     ];
@@ -47,6 +47,16 @@ class Product extends Model
         return ImageHelper::getUrl($path, '/images/placeholder-product.webp');
     }
 
+    /** Small WebP for product cards; falls back to the full image. */
+    public function getThumbUrlAttribute()
+    {
+        $path = $this->main_image
+            ? (str_contains($this->main_image, '/') ? $this->main_image : 'products/'.$this->main_image)
+            : null;
+
+        return ImageHelper::thumbnailUrl($path) ?? $this->main_image_url;
+    }
+
     public function getPriceFormattedAttribute()
     {
         return 'Rs. ' . number_format($this->price, 2);
@@ -60,6 +70,12 @@ class Product extends Model
     public function getIsOnSaleAttribute()
     {
         return $this->sale_price && $this->sale_price < $this->price;
+    }
+
+    /** The price a visitor actually sees: the sale price only when it is lower. */
+    public function getDisplayPriceAttribute()
+    {
+        return $this->is_on_sale ? $this->sale_price : $this->price;
     }
 
     public function getDiscountPercentageAttribute()
