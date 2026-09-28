@@ -241,7 +241,7 @@
 
                     {{-- Short Description --}}
                     @if($product->short_description)
-                        <p class="mt-5 text-sm leading-7 text-text-secondary">{{ $product->short_description }}</p>
+                        <div class="rich-content prose prose-zinc prose-sm mt-5 max-w-none leading-7 text-text-secondary">{!! $product->short_description_html !!}</div>
                     @endif
 
                     <div class="my-6 h-px bg-border"></div>
@@ -318,11 +318,11 @@
             </div>
 
             <div id="pdp-panel-description"
-                class="pdp-panel pt-8 prose prose-zinc max-w-none text-sm leading-7 text-text-secondary">
+                class="pdp-panel rich-content pt-8 prose prose-zinc max-w-none text-sm leading-7 text-text-secondary">
                 @if($product->description)
                     {!! $product->description !!}
                 @elseif($product->short_description)
-                    <p>{{ $product->short_description }}</p>
+                    {!! $product->short_description_html !!}
                 @else
                     <p class="text-zinc-400">No description available for this product yet.</p>
                 @endif

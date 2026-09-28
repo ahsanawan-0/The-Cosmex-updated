@@ -29,7 +29,7 @@
         </div>
         <div>
             <label for="body" class="mb-2 block text-sm font-medium text-zinc-700">Article</label>
-            <textarea id="body" name="body" rows="24" data-html-editor class="{{ $input }}">{{ old('body', data_get($post, 'body')) }}</textarea>
+            <textarea id="body" name="body" rows="24" data-rich-editor data-height="680" data-upload-folder="blog" class="{{ $input }}">{{ old('body', data_get($post, 'body')) }}</textarea>
         </div>
         <details class="rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 p-4 text-sm text-zinc-600">
             <summary class="cursor-pointer font-semibold text-zinc-800">Live price shortcodes (type them on their own line)</summary>
@@ -97,40 +97,4 @@
     </div>
 </div>
 
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        (() => {
-            if (!window.tinymce || !document.querySelector('[data-html-editor]')) return;
-            tinymce.init({
-                selector: '[data-html-editor]',
-                base_url: 'https://cdn.jsdelivr.net/npm/tinymce@6.8.5',
-                suffix: '.min',
-                height: 640,
-                menubar: false,
-                branding: false,
-                promotion: false,
-                convert_urls: false,
-                plugins: 'advlist autolink lists link image table code fullscreen wordcount',
-                toolbar: 'undo redo | blocks | bold italic | bullist numlist | link image table | code fullscreen',
-                block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Quote=blockquote',
-                images_file_types: 'jpeg,jpg,png,webp',
-                automatic_uploads: true,
-                images_upload_handler: (blobInfo) => new Promise((resolve, reject) => {
-                    const formData = new FormData();
-                    formData.append('image', blobInfo.blob(), blobInfo.filename());
-                    formData.append('folder', 'blog');
-                    fetch('{{ route('admin.images.upload') }}', {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' },
-                        body: formData,
-                    }).then((response) => response.ok ? response.json() : Promise.reject('Upload failed'))
-                      .then((json) => json.url ? resolve(json.url) : reject('No URL returned'))
-                      .catch(reject);
-                }),
-                setup: (editor) => editor.on('change keyup undo redo', () => editor.save()),
-            });
-            document.querySelector('[data-html-editor]').closest('form')?.addEventListener('submit', () => tinymce.triggerSave());
-        })();
-    </script>
-@endpush
+@include('admin.partials.rich-editor')

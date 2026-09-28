@@ -62,7 +62,7 @@
                     </nav>
                 @endif
 
-                <div class="prose prose-zinc max-w-none prose-headings:font-heading prose-headings:scroll-mt-40 prose-h2:mt-12 prose-h2:text-2xl prose-h3:text-lg prose-a:text-primary prose-table:text-sm prose-img:rounded-2xl">
+                <div class="rich-content prose prose-zinc max-w-none prose-headings:font-heading prose-headings:scroll-mt-40 prose-h2:mt-12 prose-h2:text-2xl prose-h3:text-lg prose-a:text-primary prose-table:text-sm prose-img:rounded-2xl">
                     {!! $html !!}
                 </div>
 

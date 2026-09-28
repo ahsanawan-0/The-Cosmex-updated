@@ -129,7 +129,7 @@ class ProductController extends Controller
 
     private function productSchema(Product $product, string $canonical, array $images, $reviews): array
     {
-        $description = SeoHelper::clean(strip_tags((string) ($product->description ?: $product->short_description)));
+        $description = str_replace('**', '', SeoHelper::clean(strip_tags((string) ($product->description ?: $product->short_description))));
 
         $data = [
             '@context' => 'https://schema.org',

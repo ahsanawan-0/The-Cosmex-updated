@@ -213,7 +213,7 @@
     @if ($seo['content'] && $products->onFirstPage() && $stats['count'] > 0)
         <section class="bg-white py-12 lg:py-16">
             <div class="mx-auto max-w-[860px] px-4 sm:px-6 lg:px-8">
-                <div id="category-guide" class="prose prose-zinc max-w-none prose-headings:font-heading prose-a:text-primary">
+                <div id="category-guide" class="rich-content prose prose-zinc max-w-none prose-headings:font-heading prose-a:text-primary">
                     {!! $seo['content'] !!}
                 </div>
             </div>

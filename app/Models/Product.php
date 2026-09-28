@@ -72,6 +72,24 @@ class Product extends Model
         return $this->sale_price && $this->sale_price < $this->price;
     }
 
+    /**
+     * Short description as HTML. Text saved from the rich editor is used as-is;
+     * older plain-text values keep their line breaks and **bold** markers.
+     */
+    public function getShortDescriptionHtmlAttribute(): string
+    {
+        $text = (string) $this->short_description;
+
+        if ($text === '' || $text !== strip_tags($text)) {
+            return $text;
+        }
+
+        $html = nl2br(e(trim($text)));
+        $html = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $html);
+
+        return '<p>' . $html . '</p>';
+    }
+
     /** The price a visitor actually sees: the sale price only when it is lower. */
     public function getDisplayPriceAttribute()
     {

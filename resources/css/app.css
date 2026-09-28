@@ -280,3 +280,30 @@
         scrollbar-width: none;
     }
 }
+
+/* Content written in the admin rich-text editor: show it as it was pasted. */
+.rich-content table {
+    border-collapse: collapse;
+}
+
+.rich-content table:not([border="0"]) th,
+.rich-content table:not([border="0"]) td {
+    border: 1px solid #d4d4d8;
+    padding: 0.5rem 0.75rem;
+}
+
+.rich-content img {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}
+
+.rich-content u {
+    text-decoration: underline;
+}
+
+.rich-content .not-prose table th,
+.rich-content .not-prose table td {
+    border: 0;
+}
+
