@@ -139,7 +139,7 @@
                                     </span>
                                     <div>
                                         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Follow Us</p>
-                                        <div class="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm font-medium text-zinc-800">
+                                        <div class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium text-zinc-800">
                                             @if ($instagram)
                                                 <a href="{{ $instagram }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 hover:text-primary"><i class="fa-brands fa-instagram"></i>Instagram</a>
                                             @endif
