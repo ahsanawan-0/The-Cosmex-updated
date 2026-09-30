@@ -128,6 +128,28 @@
                                     <p class="mt-1 text-sm font-medium text-zinc-800">{{ \App\Models\Setting::get('address') }}</p>
                                 </div>
                             </li>
+                            @php
+                                $instagram = \App\Models\Setting::get('social_instagram');
+                                $facebook = \App\Models\Setting::get('social_facebook');
+                            @endphp
+                            @if ($instagram || $facebook)
+                                <li class="flex items-start gap-4">
+                                    <span class="mt-0.5 rounded-xl bg-primary/10 p-2.5 text-primary">
+                                        <i class="fa-solid fa-hashtag flex h-5 w-5 items-center justify-center"></i>
+                                    </span>
+                                    <div>
+                                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Follow Us</p>
+                                        <div class="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm font-medium text-zinc-800">
+                                            @if ($instagram)
+                                                <a href="{{ $instagram }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 hover:text-primary"><i class="fa-brands fa-instagram"></i>Instagram</a>
+                                            @endif
+                                            @if ($facebook)
+                                                <a href="{{ $facebook }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 hover:text-primary"><i class="fa-brands fa-facebook-f"></i>Facebook</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </li>
+                            @endif
                         </ul>
                     </div>
 
