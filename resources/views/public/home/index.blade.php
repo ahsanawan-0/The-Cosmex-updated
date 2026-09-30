@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Aesthetic Machines & Clinic Products in Pakistan')
-@section('meta_description', 'Lahore importer of HydraFacial, diode laser, HIFU and RF machines plus exosomes, PDRN and numbing creams for clinics. PKR prices, delivery across Pakistan.')
+@section('title', 'Wholesale Aesthetic Machines Supplier in Pakistan')
+@section('meta_description', 'Wholesale importer and supplier of aesthetic machines in Pakistan: HydraFacial, diode laser, HIFU and CO2 machines plus clinic products. Delivery nationwide.')
 @section('canonical', url('/'))
 
 @section('content')

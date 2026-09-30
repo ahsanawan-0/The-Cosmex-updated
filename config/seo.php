@@ -17,7 +17,7 @@ return [
     'categories' => [
 
         'aesthetic-machines' => [
-            'title' => 'Aesthetic Machines for Clinics in Pakistan',
+            'title' => 'Aesthetic Machines in Pakistan: Prices & Supplier',
             'description' => '{count} aesthetic machines for clinics: diode and Pico lasers, HydraFacial, HIFU, RF microneedling, Emsculpt and cryolipolysis, with PKR prices.',
             'lead' => 'Laser, HydraFacial, skin-tightening and body-contouring machines imported for clinics, dermatologists and aesthetic centres in Pakistan.',
             'content' => <<<'HTML'

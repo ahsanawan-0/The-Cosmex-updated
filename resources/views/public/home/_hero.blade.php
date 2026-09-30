@@ -27,7 +27,7 @@
                             Wholesale supplier since 2017
                         </div>
                         <h1 class="font-heading text-[2.45rem] font-bold leading-[1.04] tracking-normal text-text-primary sm:text-5xl lg:text-6xl">
-                            <span class="text-primary">Advanced Aesthetic</span> Machines for Clinics in Pakistan
+                            <span class="text-primary">Wholesale Aesthetic</span> Machines Supplier in Pakistan
                         </h1>
                         <p class="mt-5 max-w-xl text-base leading-7 text-text-secondary">
                             The Cosmex is a trusted direct importer and supplier of advanced aesthetic machines — empowering clinics and spas with cutting-edge technology.

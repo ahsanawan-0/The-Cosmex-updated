@@ -125,6 +125,7 @@ class SeoHelper
             '@id' => self::organizationId(),
             'name' => config('site.name'),
             'legalName' => config('site.legal_name'),
+            'foundingDate' => '2017',
             'url' => url('/') . '/',
             'logo' => url(config('site.logo')),
             'image' => url(config('site.og_image')),
