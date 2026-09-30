@@ -3,6 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
+    @if (config('services.ga.id') && ! app()->environment('local'))
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.ga.id') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '{{ config('services.ga.id') }}');
+
+            // Count WhatsApp and phone taps as leads.
+            document.addEventListener('click', function (event) {
+                var link = event.target.closest && event.target.closest('a[href^="https://wa.me"], a[href^="tel:"]');
+                if (link) {
+                    gtag('event', 'generate_lead', { method: link.href.indexOf('tel:') === 0 ? 'phone' : 'whatsapp' });
+                }
+            });
+        </script>
+    @endif
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#F8F9FA">
 
@@ -50,25 +69,6 @@
         <link rel="stylesheet" href="{{ $fontsUrl }}">
         <link rel="stylesheet" href="{{ $iconsUrl }}">
     </noscript>
-
-    @if (config('services.ga.id'))
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.ga.id') }}"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', '{{ config('services.ga.id') }}');
-
-            // Count WhatsApp and phone taps as leads.
-            document.addEventListener('click', function (event) {
-                var link = event.target.closest && event.target.closest('a[href^="https://wa.me"], a[href^="tel:"]');
-                if (link) {
-                    gtag('event', 'generate_lead', { method: link.href.indexOf('tel:') === 0 ? 'phone' : 'whatsapp' });
-                }
-            });
-        </script>
-    @endif
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])

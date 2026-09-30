@@ -36,7 +36,8 @@ return [
     ],
 
     'ga' => [
-        'id' => env('GOOGLE_ANALYTICS_ID', ''),
+        // Falls back to the site's GA4 property when the env value is missing or empty.
+        'id' => env('GOOGLE_ANALYTICS_ID') ?: 'G-83CEJ3TXX0',
     ],
 
 ];
