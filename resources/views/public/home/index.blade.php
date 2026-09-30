@@ -33,4 +33,6 @@
 
     @include('public.home._reviews', ['featuredReviews' => $featuredReviews])
     @include('public.home._wholesale_cta')
+
+    <x-whatsapp-float />
 @endsection
